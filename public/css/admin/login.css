@@ -1,0 +1,57 @@
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f8fafb; 
+}
+
+p {
+  color: #b3b3b3;
+  font-weight: 300; 
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: "Roboto", sans-serif; 
+}
+
+a {
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease; 
+}
+
+a:hover {
+    text-decoration: none !important; 
+}
+
+.content {
+  padding: 7rem 0; 
+}
+
+h2 {
+  font-size: 20px; 
+}
+
+@media (max-width: 991.98px) {
+  .content .bg {
+    height: 500px; 
+  } 
+}
+
+.content .contents, .content .bg {
+  width: 50%; 
+}
+
+@media (max-width: 1199.98px) {
+  .content .contents, .content .bg {
+    width: 100%; 
+  } 
+}
+
+.form-floating input{
+  background-color: #edf2f5;
+  border: none;
+}
+
+.form-floating label{
+  color: #b3b3b3;
+}
