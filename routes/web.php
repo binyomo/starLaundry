@@ -5,9 +5,6 @@ use Illuminate\Support\Facades\Route;
 // MAIN WEB
 use App\Http\Controllers\IndexController;
 
-// LOGIN
-use App\Http\Controllers\LoginController;
-
 // ORDER
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderTableController;
@@ -19,12 +16,8 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\OutletController;
 
 // WEB CONTENT
-use App\Http\Controllers\TopbarController;
-use App\Http\Controllers\HeroController;
-use App\Http\Controllers\AboutController;
+use App\Http\Controllers\WebContentController;
 use App\Http\Controllers\TestimoniController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\MessageController;
 
 // USER
 use App\Http\Controllers\UserController;
@@ -45,35 +38,91 @@ Route::get('/', [IndexController::class, 'index']);
 Route::post('/', [IndexController::class, 'store']);
 
 // ADMIN LOGIN
-Route::get('/admin/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
-Route::post('/admin/login', [LoginController::class, 'authenticate']);
-Route::post('/admin/logout', [LoginController::class, 'logout']);
+Route::get('/admin/login', [IndexController::class, 'login'])->name('login')->middleware('guest');
+Route::post('/admin/login', [IndexController::class, 'authenticate']);
+Route::post('/admin/logout', [IndexController::class, 'logout']);
 
-// ADMIN 
-Route::get('/admin', [IndexController::class, 'admin'])->middleware('auth');
 
-// ADMIN ORDER
-Route::get('/admin/order/list', [OrderController::class, 'list'])->middleware('staf');
-Route::get('/admin/order/progress', [OrderController::class, 'progress'])->middleware('staf');
-Route::get('/admin/order/ready', [OrderController::class, 'ready'])->middleware('staf');
-Route::get('/admin/order/done', [OrderController::class, 'done'])->middleware('auth');
-Route::get('/admin/order/cancel', [OrderController::class, 'cancel'])->middleware('auth');
 
-Route::resource('/admin/order', OrderController::class)->except('destroy')->middleware('auth');
+/*
+|--------------------------------------------------------------------------
+| MIDDLEWARE AUTH
+|--------------------------------------------------------------------------
+*/ 
+Route::group(['middleware' => ['auth']], function () {
+	Route::get('/admin', [IndexController::class, 'admin']);
 
-// ADMIN MASTER DATA
-Route::resource('/admin/member', MemberController::class)->middleware('auth');
-Route::resource('/admin/barang', BarangController::class)->middleware('owner');
-Route::resource('/admin/discount', DiscountController::class)->middleware('owner');
-Route::resource('/admin/outlet', OutletController::class)->middleware('owner');
+	// ADMIN ORDER
+	Route::resource('/admin/order', OrderController::class)->except('destroy');
+	Route::get('/admin/order/done', [OrderController::class, 'done']);
+	Route::get('/admin/order/cancel', [OrderController::class, 'cancel']);
 
-// ADMIN WEB CONTENT
-Route::resource('/admin/topbar', TopbarController::class)->middleware('admin')->except('create', 'store', 'show', 'edit', 'destroy');
-Route::resource('/admin/hero', HeroController::class)->middleware('admin')->except('create', 'store', 'show', 'edit', 'destroy');
-Route::resource('/admin/about', AboutController::class)->middleware('admin')->except('create', 'store', 'show', 'edit', 'destroy');
-Route::resource('/admin/testimoni', TestimoniController::class)->middleware('admin');
-Route::resource('/admin/contact', ContactController::class)->middleware('admin')->except('create', 'store', 'show', 'edit', 'destroy');
-Route::resource('/admin/message', MessageController::class)->middleware('admin')->except('create', 'store', 'edit', 'update');
+	// ADMIN MASTER DATA
+	Route::resource('/admin/member', MemberController::class);
+});
 
-// ADMIN USER
-Route::resource('/admin/user', UserController::class)->middleware('owner');
+
+
+/*
+|--------------------------------------------------------------------------
+| MIDDLEWARE STAF
+|--------------------------------------------------------------------------
+*/ 
+Route::group(['middleware' => ['staf']], function () {
+	// ADMIN ORDER
+	Route::get('/admin/order/list', [OrderController::class, 'list']);
+	Route::get('/admin/order/progress', [OrderController::class, 'progress']);
+	Route::get('/admin/order/ready', [OrderController::class, 'ready']);	
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
+| MIDDLEWARE OWNER
+|--------------------------------------------------------------------------
+*/ 
+Route::group(['middleware' => ['owner']], function () {
+	// ADMIN MASTER DATA
+	Route::resource('/admin/barang', BarangController::class);
+	Route::resource('/admin/discount', DiscountController::class);
+	Route::resource('/admin/outlet', OutletController::class);
+
+	// ADMIN USER
+	Route::resource('/admin/user', UserController::class)->middleware('owner');
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
+| MIDDLEWARE ADMIN
+|--------------------------------------------------------------------------
+*/ 
+Route::group(['middleware' => ['admin']], function () {
+	// TOPBAR
+	Route::get('/admin/topbar', [WebContentController::class, 'indexTopbar']);
+	Route::put('/admin/topbar/{id}', [WebContentController::class, 'updateTopbar']);
+
+	// HERO
+	Route::get('/admin/hero', [WebContentController::class, 'indexHero']);
+	Route::put('/admin/hero/{id}', [WebContentController::class, 'updateHero']);
+
+	// ABOUT
+	Route::get('/admin/about', [WebContentController::class, 'indexAbout']);
+	Route::put('/admin/about/{id}', [WebContentController::class, 'updateAbout']);
+
+	// TESTIMONI
+	Route::resource('/admin/testimoni', TestimoniController::class);
+
+	// CONTACT
+	Route::get('/admin/contact', [WebContentController::class, 'indexContact']);
+	Route::put('/admin/contact/{id}', [WebContentController::class, 'updateContact']);
+
+	// MESSAGE
+	Route::get('/admin/message', [WebContentController::class, 'indexMessage']);
+	Route::get('/admin/message/{id}', [WebContentController::class, 'showMessage']);
+	Route::delete('/admin/message/{id}', [WebContentController::class, 'destroyMessage']);
+
+});
+

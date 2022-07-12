@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Topbar;
 use App\Models\Hero;
 use App\Models\About;
@@ -9,7 +12,6 @@ use App\Models\Testimoni;
 use App\Models\Contact;
 use App\Models\Message;
 use App\Models\Order;
-use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
@@ -48,6 +50,39 @@ class IndexController extends Controller
     public function admin()
     {
         return view('admin.index');
+    }
+
+    public function login()
+    {
+        return view('admin.login.index');
+    }
+
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->validate([
+            'username' => 'required|min:3',
+            'password' => 'required'
+        ]);
+
+        $remember = $request->get('remember');
+
+        if(Auth::attempt($credentials, $remember)){
+            $request->session()->regenerate();
+            return redirect()->intended('/admin')->with('success', 'Login Berhasil!, Hai!!!');
+        }
+
+        return back()->with('loginError', 'Login Failed');
+    }
+
+    public function logout(Request $request) 
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();     
+
+        return redirect('/admin/login');
     }
 
 }
