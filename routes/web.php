@@ -7,7 +7,6 @@ use App\Http\Controllers\IndexController;
 
 // ORDER
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\OrderTableController;
 
 // MASTER DATA
 use App\Http\Controllers\MemberController;
