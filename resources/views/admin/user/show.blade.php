@@ -25,12 +25,12 @@
 	        		</div>
 	        	</div>
 
-	        	<div class="row">
+	        	<div class="row pb-4">
 	        		<div class="col-md-6 pb-md-0 pb-4">
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-	                      	Email
+	                      	Outlet
 	                    </div>
-	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user->email }}</div>
+	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user->outlet }}</div>
 	        		</div>
 
 	        		<div class="col-md-6">
@@ -47,6 +47,15 @@
 					       	@endif
 	                    </div>
 	        		</div>
+	        	</div>
+
+	        	<div class="row">
+	        		<div class="col-md-12">
+		        		<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+		                      	Email
+		                    </div>
+		                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user->email }}</div>
+		        	</div>
 	        	</div>
 
 			</div>

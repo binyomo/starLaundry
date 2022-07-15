@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 Use App\Models\Barang;
+Use App\Models\BarangOrder;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -113,8 +114,15 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        Barang::destroy($barang->id);
+        $order = BarangOrder::where('barang_id', $barang->id)->count();
 
-        return redirect('/admin/barang')->with('success', 'Delete Barang Berhasil!');
+        if ($order < 0) {
+            Barang::destroy($barang->id);
+
+            return redirect('/admin/barang')->with('success', 'Delete Barang Berhasil!');    
+        } else{
+            return redirect('/admin/barang')->with('error', 'Data Barang Dipakai Di Order');    
+        }
+        
     }
 }

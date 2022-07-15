@@ -17,6 +17,7 @@
                         <tr>
                             <th>No</th>
                             <th>Username</th>
+                            <th>Outlet</th>
                             <th>Type</th>
                             <th>Activity</th>
                             <th>Action</th>
@@ -27,6 +28,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $user->username }}</td>
+                            <td>{{ $user->outlet }}</td>
                             <td>
                             	@if($user->usertype_id == 1)
 					       			Owner
@@ -54,6 +56,11 @@
                             <td>
                             	<a href="/admin/user/{{ $user->username }}"><i class="fas fa-eye px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Detail"></i></a>
 				          		<a href="/admin/user/{{ $user->username }}/edit"><i class="fas fa-edit px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Edit"></i></a>
+                                <form action="/admin/user/{{ $user->username }}" method="post" class="d-inline px-1" id="actform">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="button" class="act-btn fas fa-trash px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Delete"></button>
+                                </form>
                             </td>
                         </tr>
                        	@endforeach

@@ -31,14 +31,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Calvin Ramadhan',
             'nickname' => 'Calvin',
             'slug' => 'calvin',
-            'number' => '01234567890'
+            'number' => '01234567890',
+            'outlet' => 'Bogor'
         ]);
 
         Member::create([
             'name' => 'Budiansyah',
             'nickname' => 'Budi',
             'slug' => 'budi',
-            'number' => '01234567890'
+            'number' => '01234567890',
+            'outlet' => 'Bogor'
         ]);
         
         Barang::create([
@@ -101,6 +103,12 @@ class DatabaseSeeder extends Seeder
             'alamat' => 'Ciomas'
         ]);
 
+        Outlet::create([
+            'name' => 'Jogja',
+            'slug' => 'jogja',
+            'alamat' => 'Gunung Kidul'
+        ]);
+
         UserType::create([
             'name' => 'owner',
             'slug' => 'owner'
@@ -121,7 +129,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'handi',
             'username' => 'handi',
             'email' => 'owner@gmail.com',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
+            'outlet' => 'Bogor'
         ]);
 
         User::create([
@@ -129,15 +138,26 @@ class DatabaseSeeder extends Seeder
             'name' => 'desi',
             'username' => 'desi',
             'email' => 'staf@gmail.com',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
+            'outlet' => 'Bogor'
         ]);
 
         User::create([
             'usertype_id' => '3',
             'name' => 'bintang',
             'username' => 'bintang',
+            'email' => 'bintang@gmail.com',
+            'password' => bcrypt('password'),
+            'outlet' => 'Bogor'
+        ]);
+
+        User::create([
+            'usertype_id' => '3',
+            'name' => 'admin',
+            'username' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
+            'outlet' => 'Jogja'
         ]);
 
         Topbar::create([

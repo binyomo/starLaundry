@@ -27,15 +27,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $outlet->name }}</td>
-                            <td>
-                            	@if($outlet->outlettype_id == 1)
-					       			Owner
-					       		@elseif($outlet->outlettype_id == 2)
-					       			Staf
-					       		@else
-					       			Admin
-					       		@endif
-				       		</td>
+                            <td>{{ $outlet->alamat }}</td>
                             <td class="lh-base">
                             	<i class="fas fa-plus-circle" data-bs-toggle="tooltip" data-bs-html="true" title="Created"></i> 
 				          		@if($outlet->created_by)
@@ -54,6 +46,11 @@
                             <td>
                             	<a href="/admin/outlet/{{ $outlet->slug }}"><i class="fas fa-eye px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Detail"></i></a>
 				          		<a href="/admin/outlet/{{ $outlet->slug }}/edit"><i class="fas fa-edit px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Edit"></i></a>
+                                <form action="/admin/outlet/{{ $outlet->slug }}" method="post" class="d-inline px-1" id="actform">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="button" class="act-btn fas fa-trash px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Delete"></button>
+                                </form>
                             </td>
                         </tr>
                        	@endforeach

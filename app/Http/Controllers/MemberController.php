@@ -16,7 +16,7 @@ class MemberController extends Controller
     public function index()
     {
         return view('admin.member.index', [
-            'members' => Member::latest()->paginate(10)
+            'members' => Member::where('outlet', auth()->user()->outlet)->latest()->paginate(10)
         ]);
     }
 
@@ -39,10 +39,12 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'nickname' => 'required|min:3',
-            'number' => 'required|min:3'
+            'name' => 'required',
+            'nickname' => 'required',
+            'number' => 'required'
         ]);
+
+        $validatedData['outlet'] = auth()->user()->outlet;
 
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['updated_by'] = auth()->user()->username;
@@ -91,10 +93,12 @@ class MemberController extends Controller
         $member->slug = null;
 
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'nickname' => 'required|min:1',
+            'name' => 'required',
+            'nickname' => 'required',
             'number' => 'required'
         ]);
+
+        $validatedData['outlet'] = auth()->user()->outlet;
 
         $validatedData['updated_by'] = auth()->user()->username;
         

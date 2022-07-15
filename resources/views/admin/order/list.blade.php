@@ -51,13 +51,13 @@
                                     @method('put')
                                     @csrf
                                     <input type="hidden" name="status" value="2">
-                                    <button type=submit class="fas fa-sign-in-alt px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Update Status" onclick="return confirm('Anda Yakin Update Status Order')"></button>
+                                    <button type="button" class="act-btn fas fa-sign-in-alt px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Update Status"></button>
                                 </form>
                                 <form method="post" action="/admin/order/{{ $order->code }}" class="d-inline" id="actform">
                                     @method('put')
                                     @csrf
                                     <input type="hidden" name="status" value="5">
-                                    <button type=submit class="fas fa-calendar-times px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Cancel" onclick="return confirm('Anda Yakin Ingin Cancel Order')"></button>
+                                    <button type="button" class="act-btn fas fa-calendar-times px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Cancel"></button>
                                 </form>
                             </td>
                         </tr>

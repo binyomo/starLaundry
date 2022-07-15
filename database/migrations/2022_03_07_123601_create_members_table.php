@@ -17,7 +17,8 @@ class CreateMembersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('nickname');
-            $table->integer('number');
+            $table->string('number');
+            $table->string('outlet');
             $table->string('slug')->unique();
             $table->timestamps();
             $table->string('created_by')->nullable();

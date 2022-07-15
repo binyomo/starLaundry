@@ -45,25 +45,6 @@ Route::post('/admin/logout', [IndexController::class, 'logout']);
 
 /*
 |--------------------------------------------------------------------------
-| MIDDLEWARE AUTH
-|--------------------------------------------------------------------------
-*/ 
-Route::group(['middleware' => ['auth']], function () {
-	Route::get('/admin', [IndexController::class, 'admin']);
-
-	// ADMIN ORDER
-	Route::resource('/admin/order', OrderController::class)->except('destroy');
-	Route::get('/admin/order/done', [OrderController::class, 'done']);
-	Route::get('/admin/order/cancel', [OrderController::class, 'cancel']);
-
-	// ADMIN MASTER DATA
-	Route::resource('/admin/member', MemberController::class);
-});
-
-
-
-/*
-|--------------------------------------------------------------------------
 | MIDDLEWARE STAF
 |--------------------------------------------------------------------------
 */ 
@@ -88,7 +69,7 @@ Route::group(['middleware' => ['owner']], function () {
 	Route::resource('/admin/outlet', OutletController::class);
 
 	// ADMIN USER
-	Route::resource('/admin/user', UserController::class)->middleware('owner');
+	Route::resource('/admin/user', UserController::class);
 });
 
 
@@ -125,3 +106,21 @@ Route::group(['middleware' => ['admin']], function () {
 
 });
 
+
+
+/*
+|--------------------------------------------------------------------------
+| MIDDLEWARE AUTH
+|--------------------------------------------------------------------------
+*/ 
+Route::group(['middleware' => ['auth']], function () {
+	Route::get('/admin', [IndexController::class, 'admin']);
+
+	// ADMIN ORDER
+	Route::get('/admin/order/done', [OrderController::class, 'done']);
+	Route::get('/admin/order/cancel', [OrderController::class, 'cancel']);
+	Route::resource('/admin/order', OrderController::class);
+
+	// ADMIN MASTER DATA
+	Route::resource('/admin/member', MemberController::class);
+});

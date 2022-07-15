@@ -17,11 +17,19 @@ document.querySelector(".nav-logout").addEventListener('click', function(){
 			      	showConfirmButton: false
 				})
 			)
+	  	} else if(result.dismiss){
+	  		Swal.fire(
+		      'Cancelled',
+		      'Kamu Tidak Logout',
+		      'error'
+		    )
 	  	}
 	})
 });
 
-$('.act-btn').on('click', function () {
+$('.act-btn').on('click', function (e) {
+	e.preventDefault();
+	
 	Swal.fire({
 	    title: 'Kamu Yakin???',
 	    text: "Melakukan Aksi Ini",
@@ -32,7 +40,13 @@ $('.act-btn').on('click', function () {
 		confirmButtonText: 'Ya, Lakukan'
 	}).then((result) => {
 	  	if (result.isConfirmed) {
-	  		$('#actform').submit()
+	  		$(e.target).closest('form').submit()
+	  	} else if(result.dismiss){
+	  		Swal.fire(
+		      'Cancelled',
+		      'Aksi Tidak Terjadi',
+		      'error'
+		    )
 	  	}
 	})
 });

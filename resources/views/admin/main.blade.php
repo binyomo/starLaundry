@@ -264,8 +264,8 @@
 	                        <!-- Nav Item - User Information -->
 	                        <li class="nav-item dropdown no-arrow">
 	                            <a class="nav-link dropdown-toggle disabled">
-	                                <span class="mr-2 text-gray-600 small">{{ auth()->user()->username }}</span>
-	                                <img class="img-profile rounded-circle" src="/img/admin/undraw_profile.svg">
+	                                <span class="mr-2 text-gray-600 small">{{ auth()->user()->outlet }}</span>
+	                                <i class="fas fa-landmark text-primary fs-5"></i>
 	                            </a>
 	                        </li>
 
@@ -322,6 +322,16 @@
 				  	'SUCCESS!',
 				  	'{{ session('success') }}',
 				  	'success'
+				)
+			</script>
+		@endif
+
+		@if(session()->has('error'))
+			<script type="text/javascript">
+				Swal.fire(
+				  	'ERROR!',
+				  	'{{ session('error') }}',
+				  	'error'
 				)
 			</script>
 		@endif

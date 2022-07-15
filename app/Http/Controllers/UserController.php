@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Outlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,7 +28,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.create');
+        return view('admin.user.create', [
+            'outlets' => Outlet::latest()->get()
+        ]);
     }
 
     /**
@@ -39,11 +42,12 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'username' => 'required|min:6|unique:users',
+            'name' => 'required',
+            'username' => 'required|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:5',
-            'usertype_id' => 'required'
+            'password' => 'required',
+            'usertype_id' => 'required',
+            'outlet' => 'required'
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password']);
@@ -77,7 +81,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return view('admin.user.edit', [
-            'user' => $user
+            'user' => $user,
+            'outlets' => Outlet::latest()->get()
         ]);
     }
 
@@ -91,10 +96,11 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'username' => 'required|min:3',
+            'name' => 'required|max:255',
+            'username' => 'required',
             'email' => 'required|email',
-            'usertype_id' => 'required'
+            'usertype_id' => 'required',
+            'outlet' => 'required'
         ]);
 
         $validatedData['updated_by'] = auth()->user()->username;
@@ -113,9 +119,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        User::destroy($user->id);
+        $outlet = Outlet::where('name', $user->outlet)->count();
+        if ($outlet = 0) {
+            User::destroy($user->id);
 
-        return redirect('/admin/user')->with('success', 'Delete User Berhasil!');
-
+            return redirect('/admin/user')->with('success', 'Delete User Berhasil!');    
+        } else{
+            return redirect('/admin/user')->with('error', 'Tidak Bisa Hapus User');
+        }
+        
     }
 }

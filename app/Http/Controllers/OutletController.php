@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Outlet;
+
 use App\Models\Order;
+use App\Models\Member;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 
 class OutletController extends Controller
@@ -39,8 +43,8 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'alamat' => 'required|min:3'
+            'name' => 'required|max:255',
+            'alamat' => 'required'
         ]);
 
         $validatedData['created_by'] = auth()->user()->username;
@@ -61,7 +65,9 @@ class OutletController extends Controller
     {
         return view('admin.outlet.show', [
             'outlet' => $outlet,
-            'orders' => Order::where('outlet_id', $outlet['id'])->latest()->paginate(10)
+            'orders' => Order::where('outlet_id', $outlet->id)->latest()->paginate(10),
+            'member' => Member::where('outlet', $outlet->id)->count(),
+            'user' => User::where('outlet', $outlet->id)->count()
         ]);
     }
 
@@ -90,8 +96,8 @@ class OutletController extends Controller
         $outlet->slug = null;
 
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'alamat' => 'required|min:3',
+            'name' => 'required|max:255',
+            'alamat' => 'required',
         ]);
 
         $validatedData['updated_by'] = auth()->user()->username;
@@ -111,8 +117,13 @@ class OutletController extends Controller
      */
     public function destroy(Outlet $outlet)
     {
-        Outlet::destroy($outlet->id);
+        $user = User::where('outlet', $outlet->name)->count();
+        if ($user == 0) {
+            Outlet::destroy($outlet->id);
 
-        return redirect('/admin/outlet')->with('success', 'Delete Outlet Berhasil!');
+            return redirect('/admin/outlet')->with('success', 'Delete Outlet Berhasil!');
+        } else{
+            return redirect('/admin/outlet')->with('error', 'Tidak Bisa Hapus Outlet');
+        }
     }
 }
