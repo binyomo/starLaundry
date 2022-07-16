@@ -7,6 +7,7 @@ use App\Models\Outlet;
 use App\Models\Order;
 use App\Models\Member;
 use App\Models\Discount;
+use App\Models\Barang;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -67,9 +68,9 @@ class OutletController extends Controller
         return view('admin.outlet.show', [
             'outlet' => $outlet,
             'orders' => Order::where('outlet_id', $outlet->id)->latest()->paginate(10),
-            'member' => Member::where('outlet', $outlet->name)->count(),
-            'discount' => Discount::where('outlet', $outlet->name)->count(),
-            'user' => User::where('outlet', $outlet->name)->count()
+            'member' => Member::where('outlet_id', $outlet->id)->count(),
+            'discount' => Discount::where('outlet_id', $outlet->id)->count(),
+            'user' => User::where('outlet_id', $outlet->id)->count()
         ]);
     }
 
@@ -119,8 +120,14 @@ class OutletController extends Controller
      */
     public function destroy(Outlet $outlet)
     {
-        $user = User::where('outlet', $outlet->name)->count();
-        if ($user == 0) {
+        $user = User::where('outlet_id', $outlet->id)->count();
+        $member = Member::where('outlet_id', $outlet->id)->count();
+        $barang = Barang::where('outlet_id', $outlet->id)->count();
+        $discount = Discount::where('outlet_id', $outlet->id)->count();
+
+        $total = $user + $member + $barang + $discount;
+        
+        if ($total == 0) {
             Outlet::destroy($outlet->id);
 
             return redirect('/admin/outlet')->with('success', 'Delete Outlet Berhasil!');

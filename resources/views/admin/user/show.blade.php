@@ -30,7 +30,7 @@
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                      	Outlet
 	                    </div>
-	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user->outlet }}</div>
+	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user->outlet->name }}</div>
 	        		</div>
 
 	        		<div class="col-md-6">

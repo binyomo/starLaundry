@@ -28,7 +28,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $user->username }}</td>
-                            <td>{{ $user->outlet }}</td>
+                            <td>{{ $user->outlet->name }}</td>
                             <td>
                             	@if($user->usertype_id == 1)
 					       			Owner

@@ -60,6 +60,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
         $order = new Order;
 
         $order->customer = $request->customer;

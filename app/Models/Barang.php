@@ -13,8 +13,7 @@ class Barang extends Model
 
 	protected $guarded = ['id'];
 
-    public function getRouteKeyName()
-    {
+    public function getRouteKeyName(){
         return 'slug';
     }
 
@@ -27,8 +26,11 @@ class Barang extends Model
         ];
     }
 
-    public function orders()
-    {
+    public function orders(){
         return $this->belongsToMany(Order::class, 'barang_order');
+    }
+
+    public function outlet(){
+        return $this->belongsTo(Outlet::class);
     }
 }

@@ -13,28 +13,23 @@ class Order extends Model
 
     protected $dates = ['ambil'];
 
-    public function getRouteKeyName()
-    {
+    public function getRouteKeyName(){
         return 'code';
     }
 
-    public function member()
-    {
+    public function member(){
         return $this->belongsTo(Member::class);
     }
 
-    public function barang()
-    {
+    public function barang(){
         return $this->belongsToMany(Barang::class, 'barang_order');
     }
 
-    public function discount()
-    {
+    public function discount(){
     	return $this->belongsTo(Discount::class);
     }
 
-    public function outlet()
-    {
+    public function outlet(){
     	return $this->belongsTo(Outlet::class);
     }
 }

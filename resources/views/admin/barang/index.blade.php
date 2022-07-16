@@ -18,7 +18,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Harga</th>
-                            <th>Jumlah</th>
+                            <th>Type</th>
                             <th>Activity</th>
                             <th>Action</th>
                         </tr>
@@ -29,7 +29,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $barang->name }}</td>
                             <td>{{ $barang->harga }}</td>
-                            <td>{{ $barang->jumlah }} 
+                            <td>
                                 @if($barang->type == 0)
                                     Kg
                                 @else
@@ -54,6 +54,11 @@
                             <td>
                             	<a href="/admin/barang/{{ $barang->slug }}"><i class="fas fa-eye px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Detail"></i></a>
 				          		<a href="/admin/barang/{{ $barang->slug }}/edit"><i class="fas fa-edit px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Edit"></i></a>
+                                <form action="/admin/barang/{{ $barang->slug }}" method="post" class="d-inline px-1" id="actform">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="button" class="act-btn fas fa-trash px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Delete"></button>
+                                </form>
                             </td>
                         </tr>
                        	@endforeach

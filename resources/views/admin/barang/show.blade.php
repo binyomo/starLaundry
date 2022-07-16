@@ -26,14 +26,7 @@
 	        	</div>
 
 	        	<div class="row">
-	        		<div class="col-md-6 pb-md-0 pb-4">
-	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-	                       	Jumlah
-	                    </div>
-	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $barang->jumlah }}</div>
-	        		</div>
-
-	        		<div class="col-md-6 pb-md-0 pb-4">
+	        		<div class="col-md-12 pb-md-0 pb-4">
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                       	Type
 	                    </div>

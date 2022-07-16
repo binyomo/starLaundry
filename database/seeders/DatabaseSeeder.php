@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'nickname' => 'Calvin',
             'slug' => 'calvin',
             'number' => '01234567890',
-            'outlet' => 'Bogor'
+            'outlet_id' => '1'
         ]);
 
         Member::create([
@@ -40,22 +40,14 @@ class DatabaseSeeder extends Seeder
             'nickname' => 'Budi',
             'slug' => 'budi',
             'number' => '01234567890',
-            'outlet' => 'Jogja'
+            'outlet_id' => '2'
         ]);
         
         Barang::create([
             'name' => 'Kiloan',
-            'slug' => 'kiloan-1',
+            'slug' => 'kiloan',
             'harga' => '7500',
-            'jumlah' => '1',
-            'type' => '0'
-        ]);
-
-        Barang::create([
-            'name' => 'Kiloan',
-            'slug' => 'kiloan-2',
-            'harga' => '15000',
-            'jumlah' => '2',
+            'outlet_id' => '1',
             'type' => '0'
         ]);
 
@@ -63,15 +55,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Boneka Small',
             'slug' => 'boneka-small',
             'harga' => '5000',
-            'jumlah' => '1',
-            'type' => '1'
-        ]);
-
-        Barang::create([
-            'name' => 'Boneka Small',
-            'slug' => 'boneka-small-2',
-            'harga' => '10000',
-            'jumlah' => '2',
+            'outlet_id' => '1',
             'type' => '1'
         ]);
 
@@ -79,7 +63,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Karpet',
             'slug' => 'karpet',
             'harga' => '8000',
-            'jumlah' => '1',
+            'outlet_id' => '1',
             'type' => '1'
         ]);
 
@@ -88,7 +72,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'grand-opening',
             'discount' => '3000',
             'type' => '0',
-            'outlet' => 'Bogor'
+            'outlet_id' => '1'
         ]);
 
         Discount::create([
@@ -96,7 +80,7 @@ class DatabaseSeeder extends Seeder
             'slug' => '100-customer',
             'discount' => '10',
             'type' => '1',
-            'outlet' => 'Jogja'
+            'outlet_id' => '2'
         ]);
 
         Outlet::create([
@@ -128,38 +112,38 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'usertype_id' => '1',
+            'outlet_id' => '1',
             'name' => 'handi',
             'username' => 'handi',
             'email' => 'owner@gmail.com',
-            'password' => bcrypt('password'),
-            'outlet' => 'Bogor'
+            'password' => bcrypt('password')
         ]);
 
         User::create([
             'usertype_id' => '2',
+            'outlet_id' => '1',
             'name' => 'desi',
             'username' => 'desi',
             'email' => 'staf@gmail.com',
-            'password' => bcrypt('password'),
-            'outlet' => 'Bogor'
+            'password' => bcrypt('password')
         ]);
 
         User::create([
             'usertype_id' => '3',
+            'outlet_id' => '1',
             'name' => 'bintang',
             'username' => 'bintang',
             'email' => 'bintang@gmail.com',
-            'password' => bcrypt('password'),
-            'outlet' => 'Bogor'
+            'password' => bcrypt('password')
         ]);
 
         User::create([
             'usertype_id' => '3',
+            'outlet_id' => '2',
             'name' => 'admin',
             'username' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('password'),
-            'outlet' => 'Jogja'
+            'password' => bcrypt('password')
         ]);
 
         Topbar::create([

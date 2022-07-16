@@ -16,7 +16,7 @@ class BarangController extends Controller
     public function index()
     {
         return view('admin.barang.index', [
-            'barangs' => Barang::latest()->paginate(10)
+            'barangs' => Barang::where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
         ]);
     }
 
@@ -41,9 +41,10 @@ class BarangController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|min:3|max:255',
             'harga' => 'required',
-            'jumlah' => 'required',
             'type' => 'required'
         ]);
+
+        $validatedData['outlet_id'] = auth()->user()->outlet->id;
 
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['updated_by'] = auth()->user()->username;
@@ -93,10 +94,10 @@ class BarangController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|min:3|max:255',
             'harga' => 'required',
-            'jumlah' => 'required',
             'type' => 'required'
         ]);
-        
+
+        $validatedData['outlet_id'] = auth()->user()->outlet->id;
         $validatedData['updated_by'] = auth()->user()->username;
         
         Barang::where('id', $barang->id)
@@ -116,7 +117,7 @@ class BarangController extends Controller
     {
         $order = BarangOrder::where('barang_id', $barang->id)->count();
 
-        if ($order < 0) {
+        if ($order == 0) {
             Barang::destroy($barang->id);
 
             return redirect('/admin/barang')->with('success', 'Delete Barang Berhasil!');    

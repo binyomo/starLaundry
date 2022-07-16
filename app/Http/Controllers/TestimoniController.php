@@ -38,9 +38,9 @@ class TestimoniController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'position' => 'required|min:3',
-            'statement' => 'required|min:3'
+            'name' => 'required|max:255',
+            'position' => 'required',
+            'statement' => 'required'
         ]);
 
         $validatedData['created_by'] = auth()->user()->username;
@@ -89,9 +89,9 @@ class TestimoniController extends Controller
         $testimoni->slug = null;
 
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'position' => 'required|min:3',
-            'statement' => 'required|min:3'
+            'name' => 'required|max:255',
+            'position' => 'required',
+            'statement' => 'required'
         ]);
 
         $validatedData['updated_by'] = auth()->user()->username;

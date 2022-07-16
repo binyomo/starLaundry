@@ -52,10 +52,10 @@
 				<div class="row">
 					<div class="input-box col-md-6">
 			           	<div class="form-floating mb-3">
-						  	<select class="form-select border-left-primary" name="outlet" id="outlet">
-						  		<option class="border-bottom" value="{{ $user->outlet }}" selected="">{{ $user->outlet }}</option>
+						  	<select class="form-select border-left-primary" name="outlet_id" id="outlet">
+						  		<option class="border-bottom" value="{{ $user->outlet->id }}" selected="">{{ $user->outlet->name }}</option>
 							    @foreach ($outlets as $outlet)
-						    		<option value="{{ $outlet->name }}">{{ $outlet->name }}</option>
+						    		<option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
 						    	@endforeach
 							</select>
 						  	<label for="outlet">Outlet</label>

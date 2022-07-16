@@ -47,7 +47,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'usertype_id' => 'required',
-            'outlet' => 'required'
+            'outlet_id' => 'required'
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password']);
@@ -96,11 +96,11 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required',
             'username' => 'required',
             'email' => 'required|email',
             'usertype_id' => 'required',
-            'outlet' => 'required'
+            'outlet_id' => 'required'
         ]);
 
         $validatedData['updated_by'] = auth()->user()->username;
@@ -119,8 +119,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $outlet = Outlet::where('name', $user->outlet)->count();
-        if ($outlet = 0) {
+        if ($user->outlet->name == auth()->user()->outlet->name) {
             User::destroy($user->id);
 
             return redirect('/admin/user')->with('success', 'Delete User Berhasil!');    

@@ -13,8 +13,7 @@ class Discount extends Model
 
 	protected $guarded = ['id'];
 
-    public function getRouteKeyName()
-    {
+    public function getRouteKeyName(){
         return 'slug';
     }
 
@@ -29,5 +28,9 @@ class Discount extends Model
 
     public function orders(){
         return $this->hasMany(Order::class);
+    }
+
+    public function outlet(){
+        return $this->belongsTo(Outlet::class);
     }
 }

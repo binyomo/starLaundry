@@ -52,16 +52,16 @@
 			    <div class="row">
 			    	<div class="input-box col-md-6">
 				    	<div class="form-floating mb-3">
-						  	<select class="form-select border-left-primary" name="outlet" id="outlet">
+						  	<select class="form-select border-left-primary" name="outlet_id" id="outlet_id">
 								@foreach ($outlets as $outlet)
 						    		@if(old('outlet') == $outlet->name)
-						    			<option value="{{ $outlet->name }}" selected="">{{  $outlet->name }}</option>
+						    			<option value="{{ $outlet->id }}" selected="">{{  $outlet->name }}</option>
 						    		@else
-						    			<option value="{{ $outlet->name }}">{{ $outlet->name }}</option>
+						    			<option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
 						    		@endif
 						    	@endforeach
 							</select>
-						  	<label for="outlet">Outlet</label>
+						  	<label for="outlet_id">Outlet</label>
 						</div>
 					</div>
 			      	<div class="input-box col-md-6">

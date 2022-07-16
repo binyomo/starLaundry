@@ -264,7 +264,7 @@
 	                        <!-- Nav Item - User Information -->
 	                        <li class="nav-item dropdown no-arrow">
 	                            <a class="nav-link dropdown-toggle disabled">
-	                                <span class="mr-2 fw-bold small text-dark">{{ auth()->user()->outlet }}</span>
+	                                <span class="mr-2 fw-bold small text-dark">{{ auth()->user()->outlet->name }}</span>
 	                                <i class="fas fa-landmark fs-5 text-dark"></i>
 	                            </a>
 	                        </li>
@@ -373,7 +373,7 @@
 			  data: {
 			    labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
 			    datasets: [{
-			      label: "Earnings",
+			      label: "Pendapatan",
 			      lineTension: 0.3,
 			      backgroundColor: "rgba(78, 115, 223, 0.05)",
 			      borderColor: "rgba(78, 115, 223, 1)",
@@ -449,7 +449,7 @@
 			      callbacks: {
 			        label: function(tooltipItem, chart) {
 			          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-			          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+			          return datasetLabel + ': Rp ' + number_format(tooltipItem.yLabel);
 			        }
 			      }
 			    }
@@ -462,7 +462,7 @@
 			  data: {
 			    labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
 			    datasets: [{
-			      label: "Earnings",
+			      label: "Order",
 			      lineTension: 0.3,
 			      backgroundColor: "rgba(78, 115, 223, 0.05)",
 			      borderColor: "rgba(78, 115, 223, 1)",
@@ -538,11 +538,52 @@
 			      callbacks: {
 			        label: function(tooltipItem, chart) {
 			          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-			          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+			          return datasetLabel + " : " +number_format(tooltipItem.yLabel);
 			        }
 			      }
 			    }
 			  }
+			});
+		</script>
+		@endif
+
+		@if(Request::is('admin/order/create'))
+		<script type="text/javascript">
+			$('.btn-barang').on('click', function(){
+				var newRow = `
+				<div class="row">			    		
+
+					<div class="input-box col-md-6">
+						<div class="form-floating mb-3">
+							<select class="form-select border-left-primary" name="barang[]" required="">
+								<option value="0">None</option>
+								@foreach ($discounts as $discount)
+									@if(old('discount_id') == $discount->id)
+										<option value="{{ $discount->id }}" selected="">{{ $discount->name }}</option>
+									@else
+										<option value="{{ $discount->id }}">{{ $discount->name }}</option>
+									@endif
+								@endforeach
+							</select>
+							<label for="type">Barang</label>
+						</div>
+					</div>		
+
+					<div class="input-box col-md-6 pb-lg-0">
+						<div class="form-floating mb-3">
+							<input type="text" name="jumlah[]" id="jumlah" required="" class="form-control @error('jumlah') is-invalid @enderror border-left-primary" value="{{ old('jumlah') }}" placeholder="jumlah">
+							<label for="jumlah">Jumlah</label>
+								@error('jumlah')
+								<div class="invalid-feedback">
+									{{ $message }}
+								</div>
+								@enderror
+						</div>
+					</div>
+
+				</div>
+				`;
+				$(newRow).appendTo("#barang");
 			});
 		</script>
 		@endif

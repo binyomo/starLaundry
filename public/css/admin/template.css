@@ -10005,6 +10005,10 @@ a:focus {
   border-bottom: 0.25rem solid #4e73df !important;
 }
 
+.border-top-primary {
+  border-top: 0.25rem solid #4e73df !important;
+}
+
 .border-left-secondary {
   border-left: 0.25rem solid #858796 !important;
 }

@@ -12,22 +12,11 @@
 			@method('put')
 			@csrf
 		    	<div class="row">
-			       	<div class="input-box col-md-6 pb-lg-0">
+			       	<div class="input-box col-md-12 pb-lg-0">
 			           	<div class="form-floating mb-3">
 						  	<input type="name" name="name" id="name" required="" class="form-control @error('name') is-invalid @enderror border-left-primary" value="{{ old('name', $barang->name) }}" placeholder="name">
 						  	<label for="name">Name</label>
 						  	@error('name')
-								<div class="invalid-feedback">
-						  			{{ $message }}
-								</div>
-							@enderror
-						</div>
-			       	</div>
-			       	<div class="input-box col-md-6 pb-lg-0">
-			           	<div class="form-floating mb-3">
-						  	<input type="number" name="harga" id="harga" required="" class="form-control @error('harga') is-invalid @enderror border-left-primary" value="{{ old('harga', $barang->harga) }}" placeholder="harga">
-						  	<label for="harga">Harga</label>
-						  	@error('harga')
 								<div class="invalid-feedback">
 						  			{{ $message }}
 								</div>
@@ -39,9 +28,9 @@
 			    <div class="row">
 			       	<div class="input-box col-md-6 pb-lg-0">
 			           	<div class="form-floating mb-3">
-						  	<input type="number" name="jumlah" id="jumlah" required="" class="form-control @error('jumlah') is-invalid @enderror border-left-primary" value="{{ old('jumlah', $barang->jumlah) }}" placeholder="jumlah">
-						  	<label for="jumlah">Jumlah</label>
-						  	@error('jumlah')
+						  	<input type="number" name="harga" id="harga" required="" class="form-control @error('harga') is-invalid @enderror border-left-primary" value="{{ old('harga', $barang->harga) }}" placeholder="harga">
+						  	<label for="harga">Harga</label>
+						  	@error('harga')
 								<div class="invalid-feedback">
 						  			{{ $message }}
 								</div>

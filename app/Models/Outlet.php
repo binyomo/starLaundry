@@ -13,8 +13,7 @@ class Outlet extends Model
 
 	protected $guarded = ['id'];
 
-    public function getRouteKeyName()
-    {
+    public function getRouteKeyName(){
         return 'slug';
     }
 
@@ -29,5 +28,21 @@ class Outlet extends Model
 
     public function orders(){
         return $this->hasMany(Order::class);
+    }
+
+    public function users(){
+        return $this->hasMany(User::class);
+    }
+
+    public function discounts(){
+        return $this->hasMany(Discount::class);
+    }
+
+    public function members(){
+        return $this->hasMany(Member::class);
+    }
+
+    public function barangs(){
+        return $this->hasMany(Barang::class);
     }
 }

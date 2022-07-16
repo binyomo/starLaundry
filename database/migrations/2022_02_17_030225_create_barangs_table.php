@@ -17,9 +17,9 @@ class CreateBarangsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('harga');
-            $table->integer('jumlah');
             $table->boolean('type');
             $table->string('slug')->unique();
+            $table->foreignId('outlet_id');
             $table->timestamps();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
