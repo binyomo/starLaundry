@@ -54,6 +54,11 @@
                             <td>
                             	<a href="/admin/discount/{{ $discount->slug }}"><i class="fas fa-eye px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Detail"></i></a>
 				          		<a href="/admin/discount/{{ $discount->slug }}/edit"><i class="fas fa-edit px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Edit"></i></a>
+                                <form action="/admin/discount/{{ $discount->slug }}" method="post" class="d-inline px-1" id="actform">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="button" class="act-btn fas fa-trash px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Delete"></button>
+                                </form>
                             </td>
                         </tr>
                        	@endforeach

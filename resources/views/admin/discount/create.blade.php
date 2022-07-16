@@ -37,7 +37,7 @@
 						</div>
 			       	</div>
 			      	<div class="input-box col-md-6">
-			      		<div class="form-floating">
+			      		<div class="form-floating mb-3">
 			      			<select class="form-select border-left-primary" name="type" id="type">
 							    @if(old('type') == 1)
 					    			<option value="1" selected>Persen (%)</option>

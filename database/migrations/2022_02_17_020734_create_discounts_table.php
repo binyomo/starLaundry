@@ -19,6 +19,7 @@ class CreateDiscountsTable extends Migration
             $table->integer('discount');
             $table->boolean('type');
             $table->string('slug')->unique();
+            $table->string('outlet');
             $table->timestamps();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

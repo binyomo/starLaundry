@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             'nickname' => 'Budi',
             'slug' => 'budi',
             'number' => '01234567890',
-            'outlet' => 'Bogor'
+            'outlet' => 'Jogja'
         ]);
         
         Barang::create([
@@ -87,14 +87,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Grand Opening',
             'slug' => 'grand-opening',
             'discount' => '3000',
-            'type' => '0'
+            'type' => '0',
+            'outlet' => 'Bogor'
         ]);
 
         Discount::create([
             'name' => '100 CUSTOMER',
             'slug' => '100-customer',
             'discount' => '10',
-            'type' => '1'
+            'type' => '1',
+            'outlet' => 'Jogja'
         ]);
 
         Outlet::create([

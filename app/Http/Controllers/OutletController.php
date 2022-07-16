@@ -6,6 +6,7 @@ use App\Models\Outlet;
 
 use App\Models\Order;
 use App\Models\Member;
+use App\Models\Discount;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -66,8 +67,9 @@ class OutletController extends Controller
         return view('admin.outlet.show', [
             'outlet' => $outlet,
             'orders' => Order::where('outlet_id', $outlet->id)->latest()->paginate(10),
-            'member' => Member::where('outlet', $outlet->id)->count(),
-            'user' => User::where('outlet', $outlet->id)->count()
+            'member' => Member::where('outlet', $outlet->name)->count(),
+            'discount' => Discount::where('outlet', $outlet->name)->count(),
+            'user' => User::where('outlet', $outlet->name)->count()
         ]);
     }
 

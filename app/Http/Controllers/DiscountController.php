@@ -16,7 +16,7 @@ class DiscountController extends Controller
     public function index()
     {
         return view('admin.discount.index', [
-            'discounts' => Discount::latest()->paginate(10)
+            'discounts' => Discount::where('outlet', auth()->user()->outlet)->latest()->paginate(10)
         ]);
     }
 
@@ -39,10 +39,12 @@ class DiscountController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'discount' => 'required|min:1',
+            'name' => 'required|max:255',
+            'discount' => 'required',
             'type' => 'required'
         ]);
+
+        $validatedData['outlet'] = auth()->user()->outlet;
 
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['updated_by'] = auth()->user()->username;
@@ -91,10 +93,12 @@ class DiscountController extends Controller
         $discount->slug = null;
 
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
-            'discount' => 'required|min:1',
+            'name' => 'required|max:255',
+            'discount' => 'required',
             'type' => 'required'
         ]);
+
+        $validatedData['outlet'] = auth()->user()->outlet;
 
         $validatedData['updated_by'] = auth()->user()->username;
         

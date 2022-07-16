@@ -26,7 +26,7 @@
 	        	</div>
 
 	        	<div class="row pb-4">
-	        		<div class="col-md-6 pb-md-0">
+	        		<div class="col-md-6 pb-md-0 pb-4">
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                       	Total Order
 	                    </div>
@@ -37,16 +37,23 @@
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                       	Total Member
 	                    </div>
-	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $orders->count() }}</div>
+	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $member }}</div>
 	        		</div>
 	        	</div>
 
 	        	<div class="row">
-	        		<div class="col-md-6 pb-md-0">
+	        		<div class="col-md-6 pb-md-0 pb-4">
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                       	Total User
 	                    </div>
 	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user }}</div>
+	        		</div>
+
+	        		<div class="col-md-6">
+	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+	                       	Total Discount
+	                    </div>
+	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $discount }}</div>
 	        		</div>
 	        	</div>
 
