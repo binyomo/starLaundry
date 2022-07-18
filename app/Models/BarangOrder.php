@@ -10,6 +10,9 @@ class BarangOrder extends Model
     use HasFactory;
 
     protected $table = "barang_order";
-
-    protected $fillable = ["order_id"];
+    
+    protected $fillable = [
+        'order_id',
+        'jumlah'
+    ];
 }

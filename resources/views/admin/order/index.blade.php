@@ -154,8 +154,8 @@
                                         <th>No</th>
                                         <th>Customer</th>
                                         <th>Code</th>
-                                        <th>Ambil Barang</th>
-                                        <th>Activity</th>
+                                        <th>Pembayaran</th>
+                                        <th>Taruh Barang</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -165,35 +165,34 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $order->customer }}</td>
                                         <td><div class="
-                                            @if ( $order->status == 1 )
-                                                bg-warning text-dark
-                                            @elseif ( $order->status == 2 )
-                                                bg-primary text-light
-                                            @elseif ( $order->status == 3 )
-                                                bg-success text-light
-                                            @elseif ( $order->status == 4 )
-                                                bg-secondary text-light
-                                            @else
-                                                bg-danger text-light
-                                            @endif
-                                            
-                                            p-1 text-center rounded">{{ $order->code }}</div></td>
-                                        <td>{{ $order->ambil->format('d/m/Y') }}</td>
-                                        <td class="lh-base">
-                                            <i class="fas fa-plus-circle" data-bs-toggle="tooltip" data-bs-html="true" title="Created"></i> 
-                                            @if($order->created_by)
-                                                {{ $order->created_by }}
-                                            @else
-                                                System
-                                            @endif - {{ $order->created_at->diffForHumans() }}
-                                            <br>
-                                            <i class="fas fa-wrench" data-bs-toggle="tooltip" data-bs-html="true" title="Updated"></i>
-                                            @if($order->updated_by)
-                                                {{ $order->updated_by }}
-                                            @else
-                                                System
-                                            @endif - {{ $order->updated_at->diffForHumans() }}
+                                                @if ( $order->status == 1 )
+                                                    bg-warning text-dark
+                                                @elseif ( $order->status == 2 )
+                                                    bg-primary text-light
+                                                @elseif ( $order->status == 3 )
+                                                    bg-success text-light
+                                                @elseif ( $order->status == 4 )
+                                                    bg-secondary text-light
+                                                @else
+                                                    bg-danger text-light
+                                                @endif
+                                                
+                                                p-1 text-center rounded fw-bold">
+                                                {{ $order->code }}
+                                            </div>
                                         </td>
+                                        <td>
+                                            @if($order->payment == 0)
+                                                <div class="bg-danger p-1 text-center text-light rounded fw-bold">
+                                                    Belum Bayar
+                                                </div>        
+                                            @else
+                                                <div class="bg-success p-1 text-center text-light rounded fw-bold">
+                                                    Sudah Bayar
+                                                </div>        
+                                            @endif
+                                        </td>
+                                        <td>{{ $order->created_at->format('d/m/Y') }}</td>
                                         <td>
                                             <a href="/admin/order/{{ $order->code }}"><i class="fas fa-eye px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Detail"></i></a>
                                         </td>

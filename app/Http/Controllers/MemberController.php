@@ -117,8 +117,12 @@ class MemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        Member::destroy($member->id);
+        $order = Order::where('member_id', $member->id)->count();
+        if ($order == 0) {
+            Member::destroy($member->id);
 
-        return redirect('/admin/member')->with('success', 'Delete Member Berhasil!');
+            return redirect('/admin/member')->with('success', 'Delete Member Berhasil!');    
+        }
+        return redirect('/admin/member')->with('error', 'Data Member Dipakai Di Order!');    
     }
 }

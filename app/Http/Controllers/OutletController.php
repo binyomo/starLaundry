@@ -132,7 +132,7 @@ class OutletController extends Controller
 
             return redirect('/admin/outlet')->with('success', 'Delete Outlet Berhasil!');
         } else{
-            return redirect('/admin/outlet')->with('error', 'Tidak Bisa Hapus Outlet');
+            return redirect('/admin/outlet')->with('error', 'Data Barang Dipakai Di Order');
         }
     }
 }

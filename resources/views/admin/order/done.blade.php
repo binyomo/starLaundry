@@ -18,38 +18,45 @@
                             <th>No</th>
                             <th>Customer</th>
                             <th>Code</th>
-                            <th>Ambil Barang</th>
-                            <th>Activity</th>
+                            <th>Pembayaran</th>
+                            <th>Taruh Barang</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                    	@foreach ($orders as $order)
+                        @foreach ($orders as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $order->customer }}</td>
-                            <td><div class="bg-secondary p-1 text-center text-light rounded">{{ $order->code }}</div></td>
-                            <td>{{ $order->ambil->format('d/m/Y') }}</td>
-                            <td class="lh-base">
-                            	<i class="fas fa-plus-circle" data-bs-toggle="tooltip" data-bs-html="true" title="Created"></i> 
-				          		@if($order->created_by)
-					       			{{ $order->created_by }}
-					       		@else
-					        		System
-					       		@endif - {{ $order->created_at->diffForHumans() }}
-				          		<br>
-				          		<i class="fas fa-wrench" data-bs-toggle="tooltip" data-bs-html="true" title="Updated"></i>
-				          		@if($order->updated_by)
-					       			{{ $order->updated_by }}
-					       		@else
-					       			System
-					       		@endif - {{ $order->updated_at->diffForHumans() }}
+                            <td>
+                                <div class="bg-secondary p-1 text-center text-light rounded fw-bold" data-bs-toggle="tooltip" data-bs-html="true" title="List (Barang Masuk)">
+                                    {{ $order->code }}
+                                </div>
                             </td>
                             <td>
-                            	<a href="/admin/order/{{ $order->code }}"><i class="fas fa-eye px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Detail"></i></a>
+                                @if($order->payment == 0)
+                                    <div class="bg-danger p-1 text-center text-light rounded fw-bold">
+                                        Belum Bayar
+                                    </div>        
+                                @else
+                                    <div class="bg-success p-1 text-center text-light rounded fw-bold">
+                                        Sudah Bayar
+                                    </div>        
+                                @endif
+                                
+                                
+                            </td>
+                            <td>{{ $order->created_at->format('d/m/Y') }}</td>
+                            <td>
+                                <a href="/admin/order/{{ $order->code }}"><i class="fas fa-eye px-1" data-bs-toggle="tooltip" data-bs-html="true" title="Detail"></i></a>
+                                <form action="/admin/order/{{ $order->code }}" method="post" class="d-inline px-1" id="actform">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="button" class="act-btn fas fa-trash px-1 text-primary bg-transparent border-0" data-bs-toggle="tooltip" data-bs-html="true" title="Delete"></button>
+                                </form>
                             </td>
                         </tr>
-                       	@endforeach
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -59,7 +66,6 @@
             @else
             <div class="text-center text-primary fw-bold py-3">Tidak Ada Data Yang Masuk Untuk Sekarang</div>
             @endif
-
             <div>
                 <a href="/admin/order/" class="btn btn-primary">Order</a>
             </div>  

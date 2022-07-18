@@ -15,7 +15,8 @@ class BarangOrder extends Migration
     {
         Schema::create('barang_order', function (Blueprint $table) {
             $table->foreignId('barang_id')->constrained();
-            $table->foreignId('order_id')->constrained();
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');;
+            $table->integer('jumlah');
         });
     }
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use App\Models\Barang;
 use App\Models\Discount;
-use App\Models\Outlet;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -28,11 +27,11 @@ class OrderController extends Controller
         }        
 
         return view('admin.order.index', [
-            'list' => Order::where('status', 1)->count(),
-            'progress' => Order::where('status', 2)->count(),
-            'ready' => Order::where('status', 3)->count(),
-            'done' => Order::where('status', 4)->count(),
-            'cancel' => Order::where('status', 5)->count(),
+            'list' => Order::where('status', 1)->where('outlet_id', auth()->user()->outlet->id)->count(),
+            'progress' => Order::where('status', 2)->where('outlet_id', auth()->user()->outlet->id)->count(),
+            'ready' => Order::where('status', 3)->where('outlet_id', auth()->user()->outlet->id)->count(),
+            'done' => Order::where('status', 4)->where('outlet_id', auth()->user()->outlet->id)->count(),
+            'cancel' => Order::where('status', 5)->where('outlet_id', auth()->user()->outlet->id)->count(),
             'orders' => $orders
         ]);
     }
@@ -45,10 +44,9 @@ class OrderController extends Controller
     public function create()
     {
         return view('admin.order.create', [
-            'members' => Member::all(),
-            'barangs' => Barang::all(),
-            'discounts' => Discount::all(),
-            'outlets' => Outlet::all()
+            'members' => Member::where('outlet_id', auth()->user()->outlet->id)->get(),
+            'barangs' => Barang::where('outlet_id', auth()->user()->outlet->id)->get(),
+            'discounts' => Discount::where('outlet_id', auth()->user()->outlet->id)->get(),
         ]);
     }
 
@@ -60,24 +58,36 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
         $order = new Order;
 
         $order->customer = $request->customer;
         $order->ambil = $request->ambil;
+        $order->payment = $request->payment;
         $order->member_id = $request->member_id;
         $order->discount_id = $request->discount_id;
-        $order->outlet_id = $request->outlet_id;
+        $order->outlet_id = auth()->user()->outlet->id;
         $order->note = $request->note;
         $order->code = Str::random(8);
         $order->status = 1;
+        
         $order->created_by = auth()->user()->username;
         $order->updated_by = auth()->user()->username;
+
+        if($request->payment == 1) {
+            $order->payment_by = auth()->user()->username;
+        };        
 
         $order->save();
         
         $barang = $request->barang;
-        $order->barang()->attach($barang);
+        $jumlah = $request->jumlah;
+
+        $sync_data = [];
+        for($i = 0; $i < count($barang); $i++){
+            $sync_data[$barang[$i]] = ['jumlah' => $jumlah[$i]];
+        };
+
+        $order->barang()->sync($sync_data);
 
         return redirect('/admin/order')->with('success', 'Tambah Order Berhasil!');
     }
@@ -90,10 +100,24 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        $barang = $order->barang;
+        for($i = 0; $i < count($barang); $i++){
+            $harga[$i] = $barang[$i]->harga;  
+            $jumlah[$i] = $barang[$i]->pivot->jumlah;  
+        };
+
+        for($i = 0; $i < count($harga); $i++){
+            $harga[$i] = $harga[$i]*$jumlah[$i];    
+        };
+
+        $total = 0;
+        for($i = 0; $i < count($harga); $i++){
+            $total += $harga[$i];
+        }; 
+
         return view('admin.order.show', [
             'order' => $order,
-            'barangs' => $order->barang(),
-            'harga' => $order->barang()->sum('harga'),
+            'total' => $total
         ]);
     }
 
@@ -105,7 +129,26 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        $pdf = PDF::loadview('admin.order.pdf',['order'=>$order,'harga' => $order->barang()->sum('harga')])->setPaper('A8', 'portrait');
+        $barang = $order->barang;
+        for($i = 0; $i < count($barang); $i++){
+            $harga[$i] = $barang[$i]->harga;  
+            $jumlah[$i] = $barang[$i]->pivot->jumlah;  
+        };
+
+        for($i = 0; $i < count($harga); $i++){
+            $harga[$i] = $harga[$i]*$jumlah[$i];    
+        };
+
+        $total = 0;
+        for($i = 0; $i < count($harga); $i++){
+            $total += $harga[$i];
+        }; 
+
+        $pdf = PDF::loadview('admin.order.pdf',[
+            'order' => $order,
+            'total' => $total
+        ])->setPaper('A8', 'portrait');
+
         return $pdf->stream();
     }
 
@@ -118,11 +161,28 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $validatedData['status'] = $request->status;
-        $validatedData['updated_by'] = auth()->user()->username;
+        if ($request->status > 0) {
+            $validatedData['status'] = $request->status;
+            $validatedData['updated_by'] = auth()->user()->username;    
+        }        
+
+        if ($request->status == 4) {
+            if ($order->payment == 0) {
+                return redirect('/admin/order/ready')->with('error', 'Selesaikan Pembayaran Dahulu!!!');    
+            }
+        }
+        
+        if ($request->payment == 1) {
+            $validatedData['payment'] = $request->payment;
+            $validatedData['payment_by'] = auth()->user()->username;            
+        }
         
         Order::where('id', $order->id)
             ->update($validatedData);
+
+        if ($request->payment == 1) {
+            return redirect('/admin/order')->with('success', 'Update Pembayaran Berhasil!');
+        }
 
         if ($request->status == 2) {
             return redirect('/admin/order/list')->with('success', 'Update Status Order Berhasil!');
@@ -141,43 +201,47 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Order $order)
     {
-        //
+        Order::destroy($order->id);
+
+        $order->barang()->detach($order->id);
+
+        return redirect('/admin/order')->with('success', 'Delete Order Berhasil!');    
     }
 
     public function list()
     {
         return view('admin.order.list', [
-            'orders' => Order::where('status', 1)->latest()->paginate(10)
+            'orders' => Order::where('status', 1)->where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
         ]);
     }
 
     public function progress()
     {
         return view('admin.order.progress', [
-            'orders' => Order::where('status', 2)->latest()->paginate(10)
+            'orders' => Order::where('status', 2)->where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
         ]);
     }
 
     public function ready()
     {
         return view('admin.order.ready', [
-            'orders' => Order::where('status', 3)->latest()->paginate(10)
+            'orders' => Order::where('status', 3)->where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
         ]);
     }
 
     public function done()
     {
         return view('admin.order.done', [
-            'orders' => Order::where('status', 4)->latest()->paginate(10)
+            'orders' => Order::where('status', 4)->where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
         ]);
     }
 
     public function cancel()
     {
         return view('admin.order.cancel', [
-            'orders' => Order::where('status', 5)->latest()->paginate(10)
+            'orders' => Order::where('status', 5)->where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
         ]);
     }
 }

@@ -117,14 +117,14 @@
                         Pcs
                     @endif
                 </td>
-                <td colspan="2">{{ $barang->harga }}</td>
+                <td colspan="2">{{ $barang->harga*$barang->pivot->jumlah }}</td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="2">Harga</th>
-                <th colspan="3">{{ $harga }}</th>
+                <th colspan="3">{{ $total }}</th>
             </tr>
         </tfoot>
     </table>
@@ -148,12 +148,12 @@
         <div>Total : <strong>
             @if ( $order->discount )
                 @if ( $order->discount->type == 0 )
-                    {{ $harga - $order->discount->discount }}
+                    {{ $total - $order->discount->discount }}
                 @else
-                    {{ $harga - $harga * $order->discount->discount / 100 }}
+                    {{ $total - $total * $order->discount->discount / 100 }}
                 @endif
             @else
-                {{ $harga }}
+                {{ $total }}
             @endif</strong> 
         </div>
     </div>
@@ -161,9 +161,9 @@
     <div class="garis">///////////////////////////////////////////////////////////////////////////////////////////////</div>
 
     <div class="copy">
-        <div>Terima Kasih Sudah Menggunakan Jasa Star Laundry*</div>
-        <div>Pembayaran Dilakukan Saat Menaruh Barang*</div>
-        <div>Bawa Struk Ini Saat Pengambilan Barang*</div>
+        <div>Terima Kasih Sudah Menggunakan Jasa Star Laundry</div>
+        <div>Bawa Struk Ini Saat Pengambilan Barang</div>
+        <div>***Star Laundry***</div>
     </div>
 
 </body>

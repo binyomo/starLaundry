@@ -75,6 +75,7 @@
 	                <div id="collapseOrder" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 	                    <div class="bg-white py-2 collapse-inner rounded">
 	                        <h6 class="collapse-header">Order Action:</h6>
+	                        <a class="collapse-item" href="/admin/order">Order</a>
 	                        <a class="collapse-item" href="/admin/order/list">List Order</a>
 	                        <a class="collapse-item" href="/admin/order/progress">Progress Order</a>
 	                        <a class="collapse-item" href="/admin/order/ready">Ready Order</a>
@@ -557,11 +558,11 @@
 						<div class="form-floating mb-3">
 							<select class="form-select border-left-primary" name="barang[]" required="">
 								<option value="0">None</option>
-								@foreach ($discounts as $discount)
-									@if(old('discount_id') == $discount->id)
-										<option value="{{ $discount->id }}" selected="">{{ $discount->name }}</option>
+								@foreach ($barangs as $barang)
+									@if(old('barang_id') == $barang->id)
+										<option value="{{ $barang->id }}" selected="">{{ $barang->name }}</option>
 									@else
-										<option value="{{ $discount->id }}">{{ $discount->name }}</option>
+										<option value="{{ $barang->id }}">{{ $barang->name }}</option>
 									@endif
 								@endforeach
 							</select>

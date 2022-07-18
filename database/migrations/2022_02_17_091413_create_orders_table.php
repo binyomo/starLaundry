@@ -18,12 +18,14 @@ class CreateOrdersTable extends Migration
             $table->string('code');
             $table->string('customer');
             $table->date('ambil');
+            $table->boolean('payment');
             $table->foreignId('member_id');
             $table->foreignId('discount_id');
             $table->foreignId('outlet_id');
             $table->integer('status');
             $table->text('note')->nullable();
             $table->timestamps();
+            $table->string('payment_by')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
         });

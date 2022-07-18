@@ -38,8 +38,8 @@
 			      	<div class="input-box col-md-6">
 			      		<div class="form-floating mb-3">
 				           	<select class="form-select border-left-primary" name="payment">
-								<option value="false">Belum Bayar</option>
-							    <option value="true">Sudah Bayar</option>
+								<option value="0">Belum Bayar</option>
+							    <option value="1">Sudah Bayar</option>
 							</select>
 							<label for="payment">Status Bayar</label>
 						</div>
@@ -96,11 +96,11 @@
 					      		<div class="form-floating mb-3">
 					      			<select class="form-select border-left-primary" name="barang[]">
 										<option value="0">None</option>
-								    	@foreach ($discounts as $discount)
-								    		@if(old('discount_id') == $discount->id)
-								    			<option value="{{ $discount->id }}" selected="">{{ $discount->name }}</option>
+								    	@foreach ($barangs as $barang)
+								    		@if(old('barang_id') == $barang->id)
+								    			<option value="{{ $barang->id }}" selected="">{{ $barang->name }}</option>
 								    		@else
-								    			<option value="{{ $discount->id }}">{{ $discount->name }}</option>
+								    			<option value="{{ $barang->id }}">{{ $barang->name }}</option>
 								    		@endif
 								    	@endforeach
 								    </select>

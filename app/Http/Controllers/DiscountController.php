@@ -117,8 +117,12 @@ class DiscountController extends Controller
      */
     public function destroy(Discount $discount)
     {
-        Discount::destroy($discount->id);
+        $order = Order::where('discount_id', $discount->id)->count();
+        if ($order == 0) {
+            Discount::destroy($discount->id);
 
-        return redirect('/admin/discount')->with('success', 'Delete Discount Berhasil!');
+            return redirect('/admin/discount')->with('success', 'Delete Discount Berhasil!');    
+        }
+        return redirect('/admin/discount')->with('error', 'Data Discount Dipakai Di Order!');    
     }
 }

@@ -27,7 +27,7 @@ class Barang extends Model
     }
 
     public function orders(){
-        return $this->belongsToMany(Order::class, 'barang_order');
+        return $this->belongsToMany(Order::class, 'barang_order')->withPivot('jumlah');
     }
 
     public function outlet(){
