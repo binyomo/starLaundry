@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 use App\Models\Topbar;
 use App\Models\Hero;
@@ -12,13 +13,15 @@ use App\Models\Testimoni;
 use App\Models\Contact;
 use App\Models\Message;
 use App\Models\Order;
+use App\Models\Barang;
 
 class IndexController extends Controller
 {
     public function index()
     {
         if (request('search')) {
-            $orders = Order::where('code', request('search'))->latest()->paginate(10);
+            $orders = Order::where('code', request('search'))
+                            ->latest()->paginate(10);
         }else{
             $orders = 'none';
         }        
@@ -44,12 +47,84 @@ class IndexController extends Controller
 
         Message::create($validatedData);
 
-        return redirect('/')->with('success', 'Message Berhasil Dikirim');
+        return redirect('/')
+                ->with('success', 'Message Berhasil Dikirim');
     }
 
     public function admin()
     {
-        return view('admin.index');
+        /**
+        -----------------------
+            GRAFIK PENDAPATAN
+        -----------------------
+        */
+        $pendapatan = Order::where('outlet_id', auth()->user()->outlet->id)
+                            ->get();
+
+        $dayPendapatan = Order::whereDate('created_at', date('Y-m-d'))
+                            ->where('outlet_id', auth()->user()->outlet->id)
+                            ->get();
+        $weekPendapatan = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SATURDAY)])
+                        ->where('outlet_id', auth()->user()->outlet->id)
+                        ->get();
+        $monthPendapatan = Order::whereMonth('created_at', date('m'))
+                        ->where('outlet_id', auth()->user()->outlet->id)
+                        ->get();
+        $pendapatanWeeks = Order::where('created_at', '>=', Carbon::now()->subMonth())
+                                ->groupBy('date')
+                                ->orderBy('date', 'ASC')
+                                ->get(array(
+                                    Order::raw('Date(created_at) as date'),
+                                    Order::raw('SUM(grandTotal) as "order"')
+                                ));
+
+        for ($i=0; $i < $pendapatanWeeks->count(); $i++) { 
+            $pendapatanWeek[$i] = $pendapatanWeeks[$i]['order'];
+        };
+
+        /**
+        -----------------------
+            GRAFIK ORDER
+        -----------------------
+        */
+        $order = Order::where('outlet_id', auth()->user()->outlet->id)
+                    ->get();
+        $dayOrder = Order::whereDate('created_at', date('Y-m-d'))
+                    ->where('outlet_id', auth()->user()->outlet->id)
+                    ->get();
+        $weekOrder = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SATURDAY)])
+                    ->where('outlet_id', auth()->user()->outlet->id)
+                    ->get();
+        $monthOrder = Order::whereMonth('created_at', date('m'))
+                    ->where('outlet_id', auth()->user()->outlet->id)
+                    ->get();
+
+        $orderWeeks = Order::where('created_at', '>=', Carbon::now()->subMonth())
+                    ->groupBy('date')
+                    ->orderBy('date', 'ASC')
+                    ->get(array(
+                        Order::raw('Date(created_at) as date'),
+                        Order::raw('COUNT(*) as "order"')
+                    ));
+
+        for ($i=0; $i < $orderWeeks->count(); $i++) { 
+            $orderWeek[$i] = $orderWeeks[$i]['order'];
+        };
+
+        return view('admin.index', [
+            'pendapatan' => $pendapatan,
+            'dayPendapatan' => $dayPendapatan,
+            'weekPendapatan' => $weekPendapatan,
+            'monthPendapatan' => $monthPendapatan,
+            'pendapatanWeeks' => $pendapatanWeek,
+
+            // Grafik Order
+            'order' => $order,
+            'dayOrder' => $dayOrder,
+            'weekOrder' => $weekOrder,
+            'monthOrder' => $monthOrder,
+            'orderWeeks' => $orderWeek
+        ]);
     }
 
 
@@ -73,7 +148,8 @@ class IndexController extends Controller
 
         if(Auth::attempt($credentials, $remember)){
             $request->session()->regenerate();
-            return redirect()->intended('/admin')->with('success', 'Login Berhasil!, Hai!!!');
+            return redirect()->intended('/admin')
+                    ->with('success', 'Login Berhasil!, Hai!!!');
         }
 
         return back()->with('loginError', 'Login Failed');

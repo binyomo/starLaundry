@@ -16,7 +16,8 @@ class DiscountController extends Controller
     public function index()
     {
         return view('admin.discount.index', [
-            'discounts' => Discount::where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
+            'discounts' => Discount::where('outlet_id', auth()->user()->outlet->id)
+                                    ->latest()->paginate(10)
         ]);
     }
 
@@ -39,7 +40,7 @@ class DiscountController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required',
             'discount' => 'required',
             'type' => 'required'
         ]);
@@ -51,7 +52,8 @@ class DiscountController extends Controller
 
         Discount::create($validatedData);
 
-        return redirect('/admin/discount')->with('success', 'Tambah Discount Berhasil!');
+        return redirect('/admin/discount')
+                ->with('success', 'Tambah Discount Berhasil!');
     }
 
     /**
@@ -64,7 +66,8 @@ class DiscountController extends Controller
     {
         return view('admin.discount.show', [
             'discount' => $discount,
-            'orders' => Order::where('discount_id', $discount['id'])->latest()->paginate(10)
+            'orders' => Order::where('discount_id', $discount['id'])
+                            ->latest()->paginate(10)
         ]);
     }
 
@@ -103,10 +106,11 @@ class DiscountController extends Controller
         $validatedData['updated_by'] = auth()->user()->username;
         
         Discount::where('id', $discount->id)
-            ->update($validatedData);
+                ->update($validatedData);
         $discount->update(['name' => $request->name]);
 
-        return redirect('/admin/discount')->with('success', 'Update Discount Berhasil!');
+        return redirect('/admin/discount')
+                ->with('success', 'Update Discount Berhasil!');
     }
 
     /**

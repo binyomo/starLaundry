@@ -152,7 +152,9 @@
 	                    </div>
 	                </div>
 	            </li>
+	            @endcan
 
+	            @can('admin')
 	            <!-- Nav Item - Outlet -->
 	            <li class="nav-item {{ Request::is('admin/outlet*') ? 'active' : '' }}">
 	                <a class="nav-link collapsed" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseOutlet" role="button" aria-expanded="true" aria-controls="collapseOutlet">
@@ -168,9 +170,7 @@
 	                    </div>
 	                </div>
 	            </li>
-	            @endcan
-
-	            @can('admin')
+	            
 	            <!-- Divider -->
 	            <hr class="sidebar-divider">
 
@@ -208,7 +208,7 @@
 	                ACCOUNT
 	            </div>
 
-	            @can('owner')
+	            @can('admin')
 	            <!-- Nav Item - User -->
 	            <li class="nav-item {{ Request::is('admin/user*') ? 'active' : '' }}">
 	                <a class="nav-link collapsed" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="true" aria-controls="collapseUser">
@@ -339,6 +339,7 @@
 		@endif
 
 		@if(Request::is('admin'))
+
 		<script type="text/javascript">
 			Chart.defaults.global.defaultFontColor = '#858796';
 
@@ -367,6 +368,7 @@
 			  return s.join(dec);
 			}
 
+			@can('owner')
 			// Area Chart Example
 			var ctx = document.getElementById("pendapatanChart");
 			var myLineChart = new Chart(ctx, {
@@ -386,7 +388,10 @@
 			      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
 			      pointHitRadius: 10,
 			      pointBorderWidth: 2,
-			      data: [500000, 750000, 1000000, 200000, 400000, 300000],
+			      data: [
+			      @foreach($pendapatanWeeks as $pendapatan)
+			      {{ $pendapatan }},
+			      @endforeach],
 			    }],
 			  },
 			  options: {
@@ -456,6 +461,7 @@
 			    }
 			  }
 			});
+			@endcan
 
 			var ctx = document.getElementById("orderChart");
 			var myLineChart = new Chart(ctx, {
@@ -475,7 +481,10 @@
 			      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
 			      pointHitRadius: 10,
 			      pointBorderWidth: 2,
-			      data: [20, 34, 15, 23, 19, 35],
+			      data: [
+			      @foreach($orderWeeks as $order)
+			      {{ $order }},
+			      @endforeach],
 			    }],
 			  },
 			  options: {

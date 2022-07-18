@@ -110,21 +110,21 @@
             @foreach ($order->barang as $barang)
             <tr>
                 <td colspan="1">{{ $loop->iteration }}</td>
-                <td colspan="2">{{ $barang->name }} - {{ $barang->jumlah }} 
+                <td colspan="2">{{ $barang->name }} - {{ $barang->pivot->jumlah }} 
                     @if($barang->type == 0)
                         Kg
                     @else
                         Pcs
                     @endif
                 </td>
-                <td colspan="2">{{ $barang->harga*$barang->pivot->jumlah }}</td>
+                <td colspan="2">@currency($barang->harga*$barang->pivot->jumlah)</td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="2">Harga</th>
-                <th colspan="3">{{ $total }}</th>
+                <th colspan="3">@currency($order->total)</th>
             </tr>
         </tfoot>
     </table>
@@ -137,7 +137,7 @@
         <div>Discount : <strong>
             @if ( $order->discount )
                 @if ( $order->discount->type == 0 )
-                    {{ $order->discount->discount }}
+                    @currency($order->discount->discount)
                 @else
                     {{ $order->discount->discount }} %
                 @endif
@@ -146,15 +146,7 @@
             @endif</strong> 
         </div>
         <div>Total : <strong>
-            @if ( $order->discount )
-                @if ( $order->discount->type == 0 )
-                    {{ $total - $order->discount->discount }}
-                @else
-                    {{ $total - $total * $order->discount->discount / 100 }}
-                @endif
-            @else
-                {{ $total }}
-            @endif</strong> 
+            @currency($order->grandTotal)</strong> 
         </div>
     </div>
 

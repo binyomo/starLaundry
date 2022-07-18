@@ -66,10 +66,6 @@ Route::group(['middleware' => ['owner']], function () {
 	// ADMIN MASTER DATA
 	Route::resource('/admin/barang', BarangController::class);
 	Route::resource('/admin/discount', DiscountController::class);
-	Route::resource('/admin/outlet', OutletController::class);
-
-	// ADMIN USER
-	Route::resource('/admin/user', UserController::class);
 });
 
 
@@ -80,6 +76,12 @@ Route::group(['middleware' => ['owner']], function () {
 |--------------------------------------------------------------------------
 */ 
 Route::group(['middleware' => ['admin']], function () {
+	// ADMIN MASTER DATA
+	Route::resource('/admin/outlet', OutletController::class);
+
+	// ADMIN USER
+	Route::resource('/admin/user', UserController::class);
+
 	// TOPBAR
 	Route::get('/admin/topbar', [WebContentController::class, 'indexTopbar']);
 	Route::put('/admin/topbar/{id}', [WebContentController::class, 'updateTopbar']);
@@ -103,7 +105,6 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/admin/message', [WebContentController::class, 'indexMessage']);
 	Route::get('/admin/message/{id}', [WebContentController::class, 'showMessage']);
 	Route::delete('/admin/message/{id}', [WebContentController::class, 'destroyMessage']);
-
 });
 
 

@@ -56,7 +56,8 @@ class UserController extends Controller
 
         User::create($validatedData);
 
-        return redirect('/admin/user')->with('success', 'Tambah User Berhasil!');
+        return redirect('/admin/user')
+                ->with('success', 'Tambah User Berhasil!');
     }
 
     /**
@@ -108,7 +109,8 @@ class UserController extends Controller
         User::where('id', $user->id)
             ->update($validatedData);
 
-        return redirect('/admin/user')->with('success', 'Update User Berhasil!');
+        return redirect('/admin/user')
+                ->with('success', 'Update User Berhasil!');
     }
 
     /**
@@ -122,9 +124,11 @@ class UserController extends Controller
         if ($user->outlet->name == auth()->user()->outlet->name) {
             User::destroy($user->id);
 
-            return redirect('/admin/user')->with('success', 'Delete User Berhasil!');    
+            return redirect('/admin/user')
+                    ->with('success', 'Delete User Berhasil!');    
         } else{
-            return redirect('/admin/user')->with('error', 'Tidak Bisa Hapus User');
+            return redirect('/admin/user')
+                    ->with('error', 'Tidak Bisa Hapus User');
         }
         
     }

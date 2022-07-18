@@ -5,6 +5,7 @@
     	<h1 class="h3 mb-0 text-gray-800">Dashboard, {{ auth()->user()->name }}</h1>        
 	</div>
 
+	@can('owner')
 	<div class="card border-bottom-primary shadow py-3 mb-5 px-4">
 		<h5 class="py-3 h5 mb-0 text-gray-800 fw-bold">Pendapatan</h5>        
 		<div class="row mb-0">
@@ -15,7 +16,9 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pendapatan (Harian)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">
+	                        		@currency($dayPendapatan->sum('grandTotal'))
+	                        	</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-coins fa-2x text-gray-300"></i>
@@ -31,7 +34,7 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pendapatan (Mingguan)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800"> @currency($monthPendapatan->sum('grandTotal'))</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-coins fa-2x text-gray-300"></i>
@@ -47,7 +50,7 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pendapatan (Bulanan)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">@currency($monthPendapatan->sum('grandTotal'))</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-coins fa-2x text-gray-300"></i>
@@ -63,7 +66,7 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pendapatan (Semua)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">@currency($pendapatan->sum('grandTotal'))</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-coins fa-2x text-gray-300"></i>
@@ -79,6 +82,7 @@
         	<canvas id="pendapatanChart"></canvas>
 		</div>
 	</div>
+	@endcan
 
 	<div class="card border-bottom-primary shadow py-3 mb-5 px-4">
 		<h5 class="py-3 h5 mb-0 text-gray-800 fw-bold">Order</h5>        
@@ -90,7 +94,7 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Order (Harian)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">{{ $dayOrder->count() }} Order</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-jug-detergent fa-2x text-gray-300"></i>
@@ -106,7 +110,7 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Order (Mingguan)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">{{ $weekOrder->count() }} Order</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-jug-detergent fa-2x text-gray-300"></i>
@@ -122,7 +126,7 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Order (Bulanan)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">{{ $monthOrder->count() }} Order</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-jug-detergent fa-2x text-gray-300"></i>
@@ -138,7 +142,7 @@
 	                    <div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 	                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Order (Semua)</div>
-	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+	                        	<div class="h5 mb-0 font-weight-bold text-gray-800">{{ $order->count() }} Order</div>
 	                        </div>
 	                        <div class="col-auto">
 	                        	<i class="fas fa-jug-detergent fa-2x text-gray-300"></i>

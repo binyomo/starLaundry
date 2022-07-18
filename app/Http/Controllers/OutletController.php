@@ -45,7 +45,7 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required',
             'alamat' => 'required'
         ]);
 
@@ -54,7 +54,8 @@ class OutletController extends Controller
 
         Outlet::create($validatedData);
 
-        return redirect('/admin/outlet')->with('success', 'Tambah Outlet Berhasil!');
+        return redirect('/admin/outlet')
+                ->with('success', 'Tambah Outlet Berhasil!');
     }
 
     /**
@@ -67,10 +68,14 @@ class OutletController extends Controller
     {
         return view('admin.outlet.show', [
             'outlet' => $outlet,
-            'orders' => Order::where('outlet_id', $outlet->id)->latest()->paginate(10),
-            'member' => Member::where('outlet_id', $outlet->id)->count(),
-            'discount' => Discount::where('outlet_id', $outlet->id)->count(),
-            'user' => User::where('outlet_id', $outlet->id)->count()
+            'orders' => Order::where('outlet_id', $outlet->id)
+                            ->latest()->paginate(10),
+            'member' => Member::where('outlet_id', $outlet->id)
+                            ->count(),
+            'discount' => Discount::where('outlet_id', $outlet->id)
+                            ->count(),
+            'user' => User::where('outlet_id', $outlet->id)
+                            ->count()
         ]);
     }
 
@@ -99,17 +104,18 @@ class OutletController extends Controller
         $outlet->slug = null;
 
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required',
             'alamat' => 'required',
         ]);
 
         $validatedData['updated_by'] = auth()->user()->username;
         
         Outlet::where('id', $outlet->id)
-            ->update($validatedData);
+                ->update($validatedData);
         $outlet->update(['name' => $request->name]);
 
-        return redirect('/admin/outlet')->with('success', 'Update Outlet Berhasil!');
+        return redirect('/admin/outlet')
+                ->with('success', 'Update Outlet Berhasil!');
     }
 
     /**
@@ -120,19 +126,25 @@ class OutletController extends Controller
      */
     public function destroy(Outlet $outlet)
     {
-        $user = User::where('outlet_id', $outlet->id)->count();
-        $member = Member::where('outlet_id', $outlet->id)->count();
-        $barang = Barang::where('outlet_id', $outlet->id)->count();
-        $discount = Discount::where('outlet_id', $outlet->id)->count();
+        $user = User::where('outlet_id', $outlet->id)
+                    ->count();
+        $member = Member::where('outlet_id', $outlet->id)
+                    ->count();
+        $barang = Barang::where('outlet_id', $outlet->id)
+                    ->count();
+        $discount = Discount::where('outlet_id', $outlet->id)
+                    ->count();
 
         $total = $user + $member + $barang + $discount;
         
         if ($total == 0) {
             Outlet::destroy($outlet->id);
 
-            return redirect('/admin/outlet')->with('success', 'Delete Outlet Berhasil!');
+            return redirect('/admin/outlet')
+                    ->with('success', 'Delete Outlet Berhasil!');
         } else{
-            return redirect('/admin/outlet')->with('error', 'Data Barang Dipakai Di Order');
+            return redirect('/admin/outlet')
+                    ->with('error', 'Data Barang Dipakai Di Order');
         }
     }
 }

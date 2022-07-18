@@ -172,7 +172,7 @@
 						       		Pcs
 						       	@endif
 						       	</td>
-	                            <td colspan="2" id="price">{{ $barang->harga*$barang->pivot->jumlah }}</td>
+	                            <td colspan="2" id="price">@currency($barang->harga*$barang->pivot->jumlah)</td>
 	                        </tr>
 	                       	@endforeach
 	                    </tbody>
@@ -180,7 +180,7 @@
 	                    	<tr class="table-warning">
 	                    		<th>Jumlah Harga</th>
 	                    		<th id="sub-total">
-	                    			{{ $total }}
+	                    			@currency($order->total)
 	                    		</th>
 	                    		<th>
 	                    		Discount - 
@@ -193,7 +193,7 @@
 	                    		<th>
 	                    		@if ( $order->discount )
 	                    			@if ( $order->discount->type == 0 )
-		                    			{{ $order->discount->discount }}
+		                    			@currency($order->discount->discount)
 		                    		@else
 		                    			{{ $order->discount->discount }} %
 		                    		@endif
@@ -205,15 +205,7 @@
 	                    	<tr class="table-primary text-light">
 	                    		<td colspan="2">Total</td>
 	                    		<td colspan="2">
-	                    			@if ( $order->discount )
-	                    				@if ( $order->discount->type == 0 )
-			                    			{{ $total - $order->discount->discount }}
-			                    		@else
-			                    			{{ $total - $total * $order->discount->discount / 100 }}
-			                    		@endif
-			                    	@else
-			                    		{{ $total }}
-			                    	@endif
+	                    			@currency($order->grandTotal)
 	                    		</td>
 	                    	</tr>
 	                    </tfoot>

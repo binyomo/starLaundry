@@ -38,7 +38,7 @@ class TestimoniController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required',
             'position' => 'required',
             'statement' => 'required'
         ]);
@@ -48,7 +48,8 @@ class TestimoniController extends Controller
 
         Testimoni::create($validatedData);
 
-        return redirect('/admin/testimoni')->with('success', 'Tambah Testimoni Berhasil!');
+        return redirect('/admin/testimoni')
+                ->with('success', 'Tambah Testimoni Berhasil!');
     }
 
     /**
@@ -97,10 +98,11 @@ class TestimoniController extends Controller
         $validatedData['updated_by'] = auth()->user()->username;
         
         Testimoni::where('id', $testimoni->id)
-            ->update($validatedData);
+                ->update($validatedData);
         $testimoni->update(['name' => $request->name]);
 
-        return redirect('/admin/testimoni')->with('success', 'Update Testimoni Berhasil!');
+        return redirect('/admin/testimoni')
+                ->with('success', 'Update Testimoni Berhasil!');
     }
 
     /**
@@ -113,6 +115,7 @@ class TestimoniController extends Controller
     {
         Testimoni::destroy($testimoni->id);
 
-        return redirect('/admin/testimoni')->with('success', 'Delete Testimoni Berhasil!');
+        return redirect('/admin/testimoni')
+                ->with('success', 'Delete Testimoni Berhasil!');
     }
 }

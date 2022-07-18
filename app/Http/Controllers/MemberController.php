@@ -16,7 +16,8 @@ class MemberController extends Controller
     public function index()
     {
         return view('admin.member.index', [
-            'members' => Member::where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
+            'members' => Member::where('outlet_id', auth()->user()->outlet->id)
+                                ->latest()->paginate(10)
         ]);
     }
 
@@ -51,7 +52,8 @@ class MemberController extends Controller
 
         Member::create($validatedData);
 
-        return redirect('/admin/member')->with('success', 'Tambah Member Berhasil!');
+        return redirect('/admin/member')
+                ->with('success', 'Tambah Member Berhasil!');
     }
 
     /**
@@ -64,7 +66,8 @@ class MemberController extends Controller
     {
         return view('admin.member.show', [
             'member' => $member,
-            'orders' => Order::where('member_id', $member['id'])->latest()->paginate(10)
+            'orders' => Order::where('member_id', $member['id'])
+                            ->latest()->paginate(10)
         ]);
     }
 
@@ -106,7 +109,8 @@ class MemberController extends Controller
             ->update($validatedData);
         $member->update(['nickname' => $request->nickname]);
 
-        return redirect('/admin/member')->with('success', 'Update Member Berhasil!');
+        return redirect('/admin/member')
+                ->with('success', 'Update Member Berhasil!');
     }
 
     /**
@@ -121,8 +125,10 @@ class MemberController extends Controller
         if ($order == 0) {
             Member::destroy($member->id);
 
-            return redirect('/admin/member')->with('success', 'Delete Member Berhasil!');    
+            return redirect('/admin/member')
+                    ->with('success', 'Delete Member Berhasil!');    
         }
-        return redirect('/admin/member')->with('error', 'Data Member Dipakai Di Order!');    
+        return redirect('/admin/member')
+                    ->with('error', 'Data Member Dipakai Di Order!');    
     }
 }

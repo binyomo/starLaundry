@@ -24,6 +24,8 @@ class CreateOrdersTable extends Migration
             $table->foreignId('outlet_id');
             $table->integer('status');
             $table->text('note')->nullable();
+            $table->integer('total');
+            $table->integer('grandTotal');
             $table->timestamps();
             $table->string('payment_by')->nullable();
             $table->string('created_by')->nullable();

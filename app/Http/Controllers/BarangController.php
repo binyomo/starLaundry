@@ -16,7 +16,8 @@ class BarangController extends Controller
     public function index()
     {
         return view('admin.barang.index', [
-            'barangs' => Barang::where('outlet_id', auth()->user()->outlet->id)->latest()->paginate(10)
+            'barangs' => Barang::where('outlet_id', auth()->user()->outlet->id)
+                                ->latest()->paginate(10)
         ]);
     }
 
@@ -39,7 +40,7 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
+            'name' => 'required',
             'harga' => 'required',
             'type' => 'required'
         ]);
@@ -51,7 +52,8 @@ class BarangController extends Controller
 
         Barang::create($validatedData);
 
-        return redirect('/admin/barang')->with('success', 'Tambah Barang Berhasil!');
+        return redirect('/admin/barang')
+                ->with('success', 'Tambah Barang Berhasil!');
     }
 
     /**
@@ -92,7 +94,7 @@ class BarangController extends Controller
         $barang->slug = null;
 
         $validatedData = $request->validate([
-            'name' => 'required|min:3|max:255',
+            'name' => 'required',
             'harga' => 'required',
             'type' => 'required'
         ]);
@@ -101,10 +103,11 @@ class BarangController extends Controller
         $validatedData['updated_by'] = auth()->user()->username;
         
         Barang::where('id', $barang->id)
-            ->update($validatedData);
+                ->update($validatedData);
         $barang->update(['name' => $request->name]);
 
-        return redirect('/admin/barang')->with('success', 'Update Barang Berhasil!');
+        return redirect('/admin/barang')
+                ->with('success', 'Update Barang Berhasil!');
     }
 
     /**
@@ -115,14 +118,17 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        $order = BarangOrder::where('barang_id', $barang->id)->count();
+        $order = BarangOrder::where('barang_id', $barang->id)
+                            ->count();
 
         if ($order == 0) {
             Barang::destroy($barang->id);
 
-            return redirect('/admin/barang')->with('success', 'Delete Barang Berhasil!');    
+            return redirect('/admin/barang')
+                    ->with('success', 'Delete Barang Berhasil!');    
         } else{
-            return redirect('/admin/barang')->with('error', 'Data Barang Dipakai Di Order');    
+            return redirect('/admin/barang')
+                    ->with('error', 'Data Barang Dipakai Di Order');    
         }
         
     }

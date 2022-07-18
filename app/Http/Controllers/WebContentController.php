@@ -38,7 +38,8 @@ class WebContentController extends Controller
         Topbar::where('id', $request->id)
             ->update($validatedData);
 
-        return redirect('/admin/topbar')->with('success', 'Update Topbar Berhasil!');
+        return redirect('/admin/topbar')
+                ->with('success', 'Update Topbar Berhasil!');
     }
 
 
@@ -73,7 +74,8 @@ class WebContentController extends Controller
         Hero::where('id', $request->id)
             ->update($validatedData);
 
-        return redirect('/admin/hero')->with('success', 'Update Hero Berhasil!');
+        return redirect('/admin/hero')
+                ->with('success', 'Update Hero Berhasil!');
     }
 
 
@@ -108,7 +110,8 @@ class WebContentController extends Controller
         About::where('id', $request->id)
             ->update($validatedData);
 
-        return redirect('/admin/about')->with('success', 'Update About Berhasil!');
+        return redirect('/admin/about')
+                ->with('success', 'Update About Berhasil!');
     }
 
 
@@ -136,7 +139,8 @@ class WebContentController extends Controller
         Contact::where('id', $request->id)
             ->update($validatedData);
 
-        return redirect('/admin/contact')->with('success', 'Update Contact Berhasil!');
+        return redirect('/admin/contact')
+                ->with('success', 'Update Contact Berhasil!');
     }
 
 
