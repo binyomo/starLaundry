@@ -28,7 +28,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $barang->name }}</td>
-                            <td>{{ $barang->harga }}</td>
+                            <td>@currency($barang->harga)</td>
                             <td>
                                 @if($barang->type == 0)
                                     Kg

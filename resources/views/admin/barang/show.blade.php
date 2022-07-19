@@ -21,7 +21,7 @@
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                       	Harga
 	                    </div>
-	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $barang->harga }}</div>
+	                    <div class="h5 mb-0 font-weight-bold text-gray-800">@currency($barang->harga)</div>
 	        		</div>
 	        	</div>
 

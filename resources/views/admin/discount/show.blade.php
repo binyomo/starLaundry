@@ -30,7 +30,13 @@
 	        			<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                       	Discount
 	                    </div>
-	                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $discount->discount }}</div>
+	                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+	                    	@if($discount->type == 0)
+                                @currency($discount->discount)
+                            @else
+                            	{{ $discount->discount }}%
+                            @endif
+	                    </div>
 	        		</div>
 
 	        		<div class="col-md-6 pb-md-0">

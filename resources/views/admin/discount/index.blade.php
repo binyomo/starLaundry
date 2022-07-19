@@ -28,7 +28,13 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $discount->name }}</td>
-                            <td>{{ $discount->discount }}</td>
+                            <td>
+                                @if($discount->type == 0)
+                                    @currency($discount->discount)
+                                @else
+                                    {{ $discount->discount }}%
+                                @endif
+                            </td>
                             <td>
                             	@if($discount->type == 0)
 					       			Rupiah
