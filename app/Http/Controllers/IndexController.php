@@ -53,6 +53,12 @@ class IndexController extends Controller
 
     public function admin()
     {
+        $weekDay = Carbon::now();
+        $week = []; 
+        for ($i=0; $i <7 ; $i++) {
+            $week[] = $weekDay->startOfWeek()->addDay($i)->format('Y-m-d');
+        }
+
         /**
         -----------------------
             GRAFIK PENDAPATAN
@@ -64,27 +70,17 @@ class IndexController extends Controller
         $dayPendapatan = Order::whereDate('created_at', date('Y-m-d'))
                             ->where('outlet_id', auth()->user()->outlet->id)
                             ->get();
-        $weekPendapatan = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SATURDAY)])
+        $weekPendapatan = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
                         ->where('outlet_id', auth()->user()->outlet->id)
                         ->get();
         $monthPendapatan = Order::whereMonth('created_at', date('m'))
                         ->where('outlet_id', auth()->user()->outlet->id)
                         ->get();
-        $pendapatanWeeks = Order::where('created_at', '>=', Carbon::now()->subMonth())
-                                ->where('outlet_id', auth()->user()->outlet->id)
-                                ->groupBy('date')
-                                ->orderBy('date', 'ASC')
-                                ->get(array(
-                                    Order::raw('Date(created_at) as date'),
-                                    Order::raw('SUM(grandTotal) as "order"')
-                                ));
 
-        if ($pendapatanWeeks->count() > 0) {
-            for ($i=0; $i < $pendapatanWeeks->count(); $i++) { 
-                $pendapatanWeek[$i] = $pendapatanWeeks[$i]['order'];
-            };
-        } else {
-            $pendapatanWeek = 0;        
+        for ($i=0; $i < 7; $i++) { 
+            $pendapatanWeek[$i] = Order::whereDate('created_at', $week[$i])
+                                ->where('outlet_id', auth()->user()->outlet->id)
+                                ->get()->sum('grandTotal');
         }
 
         /**
@@ -97,30 +93,17 @@ class IndexController extends Controller
         $dayOrder = Order::whereDate('created_at', date('Y-m-d'))
                     ->where('outlet_id', auth()->user()->outlet->id)
                     ->get();
-        $weekOrder = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SATURDAY)])
+        $weekOrder = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
                     ->where('outlet_id', auth()->user()->outlet->id)
                     ->get();
         $monthOrder = Order::whereMonth('created_at', date('m'))
                     ->where('outlet_id', auth()->user()->outlet->id)
                     ->get();
 
-        $orderWeeks = Order::where('created_at', '>=', Carbon::now()->subMonth())
-                    ->where('outlet_id', auth()->user()->outlet->id)
-                    ->groupBy('date')
-                    ->orderBy('date', 'ASC')
-                    ->get(array(
-                        Order::raw('Date(created_at) as date'),
-                        Order::raw('COUNT(*) as "order"')
-                    ));
-
-        
-
-        if ($orderWeeks->count() > 0) {
-            for ($i=0; $i < $orderWeeks->count(); $i++) { 
-                $orderWeek[$i] = $orderWeeks[$i]['order'];
-            };
-        } else {
-            $orderWeek = 0;        
+        for ($i=0; $i < 7; $i++) { 
+            $orderWeek[$i] = Order::whereDate('created_at', $week[$i])
+                                ->where('outlet_id', auth()->user()->outlet->id)
+                                ->get()->count('order');
         }
 
         return view('admin.index', [
@@ -135,7 +118,7 @@ class IndexController extends Controller
             'dayOrder' => $dayOrder,
             'weekOrder' => $weekOrder,
             'monthOrder' => $monthOrder,
-            'orderWeeks' => $orderWeek
+            'orderWeeks' => $orderWeek,
         ]);
     }
 

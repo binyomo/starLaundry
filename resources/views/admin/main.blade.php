@@ -374,7 +374,7 @@
 			var myLineChart = new Chart(ctx, {
 			  type: 'line',
 			  data: {
-			    labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
+			    labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"],
 			    datasets: [{
 			      label: "Pendapatan",
 			      lineTension: 0.3,
@@ -389,13 +389,9 @@
 			      pointHitRadius: 10,
 			      pointBorderWidth: 2,
 			      data: [
-			      	@if($pendapatanWeeks)
-				      @foreach($pendapatanWeeks as $pendapatan)
-				      {{ $pendapatan }},
-				      @endforeach,
-				    @else
-				      0
-			      	@endif
+				    @foreach($pendapatanWeeks as $pendapatan)
+				    	{{ $pendapatan }},
+				    @endforeach
 			      	]
 			    }],
 			  },
@@ -472,7 +468,7 @@
 			var myLineChart = new Chart(ctx, {
 			  type: 'line',
 			  data: {
-			    labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
+			    labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"],
 			    datasets: [{
 			      label: "Order",
 			      lineTension: 0.3,
@@ -487,14 +483,9 @@
 			      pointHitRadius: 10,
 			      pointBorderWidth: 2,
 			      data: [
-			      	@if($orderWeeks)
-			      		@foreach($orderWeeks as $order)
-			      			{{ $order }},
-			      		@endforeach
-			      	@else
-			        	0
-			        
-			        @endif
+			      	@foreach($orderWeeks as $order)
+			      		{{ $order }},
+			      	@endforeach
 			        ]
 			    }],
 			  },
