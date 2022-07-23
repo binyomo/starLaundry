@@ -71,6 +71,7 @@ class IndexController extends Controller
                         ->where('outlet_id', auth()->user()->outlet->id)
                         ->get();
         $pendapatanWeeks = Order::where('created_at', '>=', Carbon::now()->subMonth())
+                                ->where('outlet_id', auth()->user()->outlet->id)
                                 ->groupBy('date')
                                 ->orderBy('date', 'ASC')
                                 ->get(array(
@@ -78,9 +79,13 @@ class IndexController extends Controller
                                     Order::raw('SUM(grandTotal) as "order"')
                                 ));
 
-        for ($i=0; $i < $pendapatanWeeks->count(); $i++) { 
-            $pendapatanWeek[$i] = $pendapatanWeeks[$i]['order'];
-        };
+        if ($pendapatanWeeks->count() > 0) {
+            for ($i=0; $i < $pendapatanWeeks->count(); $i++) { 
+                $pendapatanWeek[$i] = $pendapatanWeeks[$i]['order'];
+            };
+        } else {
+            $pendapatanWeek = 0;        
+        }
 
         /**
         -----------------------
@@ -100,6 +105,7 @@ class IndexController extends Controller
                     ->get();
 
         $orderWeeks = Order::where('created_at', '>=', Carbon::now()->subMonth())
+                    ->where('outlet_id', auth()->user()->outlet->id)
                     ->groupBy('date')
                     ->orderBy('date', 'ASC')
                     ->get(array(
@@ -107,9 +113,15 @@ class IndexController extends Controller
                         Order::raw('COUNT(*) as "order"')
                     ));
 
-        for ($i=0; $i < $orderWeeks->count(); $i++) { 
-            $orderWeek[$i] = $orderWeeks[$i]['order'];
-        };
+        
+
+        if ($orderWeeks->count() > 0) {
+            for ($i=0; $i < $orderWeeks->count(); $i++) { 
+                $orderWeek[$i] = $orderWeeks[$i]['order'];
+            };
+        } else {
+            $orderWeek = 0;        
+        }
 
         return view('admin.index', [
             'pendapatan' => $pendapatan,

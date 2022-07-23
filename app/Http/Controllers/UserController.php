@@ -121,14 +121,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->outlet->name == auth()->user()->outlet->name) {
+        if ($user->outlet->name != auth()->user()->outlet->name) {
+            return redirect('/admin/user')
+                    ->with('error', 'Tidak Bisa Hapus User');
+        } else if ($user->username == auth()->user()->username){
+            return redirect('/admin/user')
+                    ->with('error', 'Tidak Bisa Hapus User');
+        } else{
             User::destroy($user->id);
 
             return redirect('/admin/user')
                     ->with('success', 'Delete User Berhasil!');    
-        } else{
-            return redirect('/admin/user')
-                    ->with('error', 'Tidak Bisa Hapus User');
         }
         
     }

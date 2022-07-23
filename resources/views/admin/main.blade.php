@@ -389,9 +389,14 @@
 			      pointHitRadius: 10,
 			      pointBorderWidth: 2,
 			      data: [
-			      @foreach($pendapatanWeeks as $pendapatan)
-			      {{ $pendapatan }},
-			      @endforeach],
+			      	@if($pendapatanWeeks)
+				      @foreach($pendapatanWeeks as $pendapatan)
+				      {{ $pendapatan }},
+				      @endforeach,
+				    @else
+				      0
+			      	@endif
+			      	]
 			    }],
 			  },
 			  options: {
@@ -482,9 +487,15 @@
 			      pointHitRadius: 10,
 			      pointBorderWidth: 2,
 			      data: [
-			      @foreach($orderWeeks as $order)
-			      {{ $order }},
-			      @endforeach],
+			      	@if($orderWeeks)
+			      		@foreach($orderWeeks as $order)
+			      			{{ $order }},
+			      		@endforeach
+			      	@else
+			        	0
+			        
+			        @endif
+			        ]
 			    }],
 			  },
 			  options: {
